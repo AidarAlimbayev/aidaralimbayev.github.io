@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
+
+<script id="sphere-vertex-shader" type="x-shader/x-vertex">
+attribute vec4 vPosition;
+attribute vec3 vCenter;
+attribute vec4 vInitPosition;
+attribute vec3 vInitCenter;
+attribute float vBodyRadius;
+attribute float vIsPlanet;
+
+uniform mat4 sphereModelViewMatrix;
+uniform mat4 projectionMatrix;
+
+varying vec4 fPosition;
+varying vec3 fCenter;
+varying vec4 fInitPosition;
+varying vec3 fInitCenter;
+varying float fBodyRadius;
+varying float fIsPlanet;
+varying mat4 fSphereModelViewMatrix;
+
+void
+main()
+{
+    fPosition = vPosition;
+    fCenter = vCenter;
+    fInitPosition = vInitPosition;
+    fInitCenter = vInitCenter;
+    fBodyRadius = vBodyRadius;
+    fIsPlanet = vIsPlanet;
+    fSphereModelViewMatrix = sphereModelViewMatrix;
+
+    gl_Position = projectionMatrix*sphereModelViewMatrix*vPosition;
+
+}
+</script>
+
+<script id="sphere-fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+
+uniform float ambientProduct;
+uniform float diffuseProduct;
+uniform float specularProduct;
+uniform float shininess;
+
+uniform mat4 rotationMatrix;
+
+uniform vec4 lightPosition;
+
+uniform samplerCube earthTexMap;
+uniform samplerCube sunTexMap;
+
+varying vec4 fPosition;
+varying vec3 fCenter;
+varying vec4 fInitPosition;
+varying vec3 fInitCenter;
+varying float fBodyRadius;
+varying float fIsPlanet;
+varying mat4 fSphereModelViewMatrix;
+
+void
+main()
+{
+
+    vec2 fRadius = fPosition.xy - fCenter.xy;
+
+    // calculate projected position facing viewer (For lighting)
+    float xSqr = pow(abs(fPosition.x - fCenter.x), 2.0);
+    float ySqr = pow(abs(fPosition.y - fCenter.y), 2.0);
+    float projZ = sqrt(fBodyRadius*fBodyRadius - xSqr - ySqr) + fCenter.z;
+    vec4 projPos = vec4(fPosition.x, fPosition.y, projZ, 1.0);
+    // calculate normal
+    vec3 N = normalize(projPos.xyz - fCenter);
+
+    // calculate other values for shading
+    vec3 pos = (fSphereModelViewMatrix * projPos).xyz;
+    vec3 light = lightPosition.xyz;
+    vec3 L = normalize( light - pos );
+    vec3 E =  -pos;
+
+    // calculate rotated projected position (for texture)
+    float xSqrInit = pow(abs(fInitPosition.x - fInitCenter.x), 2.0);
+    float ySqrInit = pow(abs(fInitPosition.y - fInitCenter.y), 2.0);
+    float projZInit = sqrt(fBodyRadius*fBodyRadius - xSqrInit - ySqrInit) + fInitCenter.z;
+    vec4 projPosInit = vec4(fInitPosition.x, fInitPosition.y, projZInit, 1.0);
+    // calculate normal
+    vec3 initNorm = normalize(projPosInit.xyz - fInitCenter);
+    vec4 initNormHomog = vec4(initNorm.x, initNorm.y, initNorm.z, 1.0);
+    // rotate tex normal
+    vec4 texNorm = normalize(rotationMatrix*initNormHomog);
+
+    vec4 fColor;
+    if (length(fRadius) <= fBodyRadius  ) {
+        vec3 H = normalize( L + E );
+        float ambient = ambientProduct;
+        float  diffuse = diffuseProduct *  max( dot(L, N), 0.0 );
+        float  specular = specularProduct * pow( max(dot(N, H), 0.0), shininess );
+
+        if( dot(L, N) < 0.0 ) specular = 0.0;
+
+        // choose texture based on radius
+        vec4 texColor;
+        if (fIsPlanet > 0.5) {
+            texColor = textureCube(earthTexMap, texNorm.xyz);
+        } else {
+            texColor = textureCube(sunTexMap, texNorm.xyz);
+            //add yellow glow
+            texColor *= vec4(1.1, 1.5, 0.0, 1.0);
+        }
+
+        fColor = texColor*(ambient + diffuse) + vec4(1.0) * specular;
+        fColor.a = 1.0;
+    } else {
+        fColor = vec4(0.0, 0.0, 0.0, 0.0);
+    }
+
+    gl_FragColor = fColor;
+}
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="../Common/dat.gui.min.js"></script>
+<script type="text/javascript" src="nBody_sim.js"></script>
+</head>
+
+<body>
+<img id = "earth_pos_y" src = "../textures/world_cube_pos_y.png" style="display: none;"></img>
+<img id = "earth_pos_x" src = "../textures/world_cube_pos_x.png" style="display: none;"></img>
+<img id = "earth_pos_z" src = "../textures/world_cube_pos_z.png" style="display: none;"></img>
+<img id = "earth_neg_y" src = "../textures/world_cube_neg_y.png" style="display: none;"></img>
+<img id = "earth_neg_x" src = "../textures/world_cube_neg_x.png" style="display: none;"></img>
+<img id = "earth_neg_z" src = "../textures/world_cube_neg_z.png" style="display: none;"></img>
+
+<img id = "sun_neg_y" src = "../textures/sun_cube_neg_y.png" style="display: none;"></img>
+<img id = "sun_neg_x" src = "../textures/sun_cube_neg_x.png" style="display: none;"></img>
+<img id = "sun_neg_z" src = "../textures/sun_cube_neg_z.png" style="display: none;"></img>
+<img id = "sun_pos_y" src = "../textures/sun_cube_pos_y.png" style="display: none;"></img>
+<img id = "sun_pos_x" src = "../textures/sun_cube_pos_x.png" style="display: none;"></img>
+<img id = "sun_pos_z" src = "../textures/sun_cube_pos_z.png" style="display: none;"></img>
+
+<canvas id="gl-canvas" width="900" height="900">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>
