@@ -75,16 +75,16 @@
 
         <div class="row">
             <div class="col-md-8">
-                <h3>Generating Useful Accident-Prone Driving Scenarios via a Learned Traffic Prior</h3>
-                <h4><b>D. Rempe</b>, J. Philion, L. Guibas, S. Fidler, and O. Litany. arXiv preprint, 2021.</h4>
-                <p>Evaluating and improving planning for autonomous vehicles requires scalable generation of long-tail traffic scenarios. To be useful, these scenarios must be realistic and challenging, but not impossible to drive through safely. In this work, we introduce STRIVE, a method to automatically generate challenging scenarios that cause a given planner to produce undesirable behavior, like collisions. To maintain scenario plausibility, the key idea is to leverage a learned model of traffic motion in the form of a graph-based conditional VAE. Scenario generation is formulated as an optimization in the latent space of this traffic model, effected by perturbing an initial real-world scene to produce trajectories that collide with a given planner. A subsequent optimization is used to find a "solution" to the scenario, ensuring it is useful to improve the given planner. Further analysis clusters generated scenarios based on collision type. We attack two planners and show that STRIVE successfully generates realistic, challenging scenarios in both cases. We additionally "close the loop" and use these scenarios to optimize hyperparameters of a rule-based planner.</p>
-                <a class="btn btn-primary" href="https://nv-tlabs.github.io/STRIVE/">Project Page <span class="glyphicon glyphicon-chevron-right"></span></a>
-                <a class="btn btn-primary" href="https://nv-tlabs.github.io/STRIVE/docs/strive.pdf">Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <h3>Test stand for prospective mobile power-supply sources</h3>
+                <h4>A. S. Alimbaev, V. S. Uss, A. B. Mirmanov, P. P. Shumakov</h4>
+                <p>This article describes a method for the long-term testing of storage batteries and high-capacity ion sources, implemented using National Instruments technologies. A test stand was developed using DAQ NI USB-6001. A brief description of the program implemented in NI LabVIEW is given. The part of the program code is opened - the block diagram of correction of temperature coefficients. The interface of a virtual device for monitoring charge and discharge is shown. In the course of the test, on the test bed, the degradation of the capacity of the charge was proved. The test results showed that the ionistor capacitance dropped from 50 kF to 3.3 kF for two weeks of testing and continued to decrease with each charge and discharge cycle.</p>
+                <a class="btn btn-primary" href="https://ieeexplore.ieee.org/document/7998548">Publication Page <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <a class="btn btn-primary" href="docs/Test_stand_for_prospective_mobile_power-supply_sources.pdf">Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
             <div class="col-md-4">
             </br></br>
-                <a href="https://nv-tlabs.github.io/STRIVE/docs/strive.pdf">
-                    </br> <img class="img-responsive" width="100%" height="100%" src="images/strive_teaser.png" alt="">
+                <a href="https://ieeexplore.ieee.org/document/7998548">
+                    </br> <img class="img-responsive" width="100%" height="100%" src="images/test_stand_power_supply.png" alt="">
                 </a>
             </div>
         </div>
@@ -93,15 +93,15 @@
 
         <div class="row">
             <div class="col-md-8">
-                <h3>HuMoR: 3D Human Motion Model for Robust Pose Estimation</h3>
-                <h4><b>D. Rempe</b>, T. Birdal, A. Hertzmann, J. Yang, S. Sridhar, and L. Guibas. International Conference on Computer Vision (<b>ICCV</b>), 2021.</h4> <h4 style="color:red;">Oral Presentation</h4>
-                <p> We introduce HuMoR: a 3D Human Motion Model for Robust Estimation of temporal pose and shape. Though substantial progress has been made in estimating 3D human motion and shape from dynamic observations, recovering plausible pose sequences in the presence of noise and occlusions remains a challenge. For this purpose, we propose an expressive generative model in the form of a conditional variational autoencoder, which learns a distribution of the change in pose at each step of a motion sequence. Furthermore, we introduce a flexible optimization-based approach that leverages HuMoR as a motion prior to robustly estimate plausible pose and shape from ambiguous observations. Through extensive evaluations, we demonstrate that our model generalizes to diverse motions and body shapes after training on a large motion capture dataset, and enables motion reconstruction from multiple input modalities including 3D keypoints and RGB(-D) videos.</p>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/humor/">Project Page <span class="glyphicon glyphicon-chevron-right"></span></a>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/humor/docs/humor.pdf">Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <h3>Implementation of PPM Modulation and Demodulation using NI Digital Electronics FPGA Board</h3>
+                <h4>Baiguanysh S.B., Mirmanov A.B., Alimbaev A.S., Makartseva A.Y.</h4>
+                <p> In the paper, the use of NI LabVIEW FPGA module and NI Digital Electronics FPGA Board for the implementation of pulse position modulator and demodulator are considered. Different features of this development board was described. The measurements and tests of the system were carried out.</p>
+                <a class="btn btn-primary" href="https://ieeexplore.ieee.org/document/7147331"> Publication Page <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <a class="btn btn-primary" href="docs/Implementation_of_PPM_modulation_and_demodulation_using_NI_Digital_Electronics_FPGA_Board.pdf">Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
             <div class="col-md-4">
             </br></br>
-                <a href="https://geometry.stanford.edu/projects/humor/docs/humor.pdf">
+                <a href="docs/Implementation_of_PPM_modulation_and_demodulation_using_NI_Digital_Electronics_FPGA_Board.pdf">
                     </br> <img class="img-responsive" width="100%" height="100%" src="images/humor_teaser.png" alt="">
                 </a>
             </div>
@@ -109,223 +109,6 @@
 
         <hr>
 
-        <div class="row">
-            <div class="col-md-8">
-                <h3>A point-cloud deep learning framework for prediction of fluid flow fields on irregular geometries</h3>
-                <h4>A. Kashefi, <b>D. Rempe</b>, and L. Guibas. Physics of Fluids, 2021.</h4>
-                <p> We present a novel deep learning framework for flow field predictions in irregular domains when the solution is a function of the geometry of either the domain or objects inside the domain. Grid vertices in a computational fluid dynamics (CFD) domain are viewed as point clouds and used as inputs to a neural network based on the PointNet architecture, which learns an end-to-end mapping between spatial positions and CFD quantities. Using our approach, (i) the network inherits desirable features of unstructured meshes (e.g., fine and coarse point spacing near the object surface and in the far field, respectively), which minimizes network training cost; (ii) object geometry is accurately represented through vertices located on object boundaries, which maintains boundary smoothness and allows the network to detect small changes between geometries and (iii) no data interpolation is utilized for creating training data; thus accuracy of the CFD data is preserved. None of these features are achievable by extant methods based on projecting scattered CFD data into Cartesian grids and then using regular convolutional neural networks. Incompressible laminar steady flow past a cylinder with various shapes for its cross section is considered. The mass and momentum of predicted fields are conserved. We test the generalizability of our network by predicting the flow around multiple objects as well as an airfoil, even though only single objects and no airfoils are observed during training. The network predicts the flow fields hundreds of times faster than our conventional CFD solver, while maintaining excellent to reasonable accuracy. </p>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/cfd_pointnet/">Project Page <span class="glyphicon glyphicon-chevron-right"></span></a>
-                <a class="btn btn-primary" href="https://aip.scitation.org/doi/10.1063/5.0033376">Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-            <div class="col-md-4">
-            </br></br>
-                <a href="https://geometry.stanford.edu/projects/cfd_pointnet">
-                    </br> <img class="img-responsive" width="100%" height="100%" src="images/neural_cfd_teaser.png" alt="">
-                </a>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-8">
-                <h3>CaSPR: Learning Canonical Spatiotemporal Point Cloud Representations</h3>
-                <h4><b>D. Rempe</b>, T. Birdal, Y. Zhao, Z. Gojcic, S. Sridhar, and L. Guibas. Advances in Neural Information Processing Systems (<b>NeurIPS</b>), 2020.</h4> <h4 style="color:red;">Spotlight Presentation</h4>
-                <p> We propose CaSPR, a method to learn object-centric canonical spatiotemporal point cloud representations of dynamically moving or evolving objects. Our goal is to enable information aggregation over time and the interrogation of object state at any spatiotemporal neighborhood in the past, observed or not. Different from previous work, CaSPR learns representations that support spacetime continuity, are robust to variable and irregularly spacetime-sampled point clouds, and generalize to unseen object instances. Our approach divides the problem into two subtasks. First, we explicitly encode time by mapping an input point cloud sequence to a spatiotemporally-canonicalized object space. We then leverage this canonicalization to learn a spatiotemporal latent representation using neural ordinary differential equations and a generative model of dynamically evolving shapes using continuous normalizing flows. We demonstrate the effectiveness of our method on several applications including shape reconstruction, camera pose estimation, continuous spatiotemporal sequence reconstruction, and correspondence estimation from irregularly or intermittently sampled observations. </p>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/caspr/">Project Page <span class="glyphicon glyphicon-chevron-right"></span></a>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/caspr/content/CaSPR_CR.pdf">Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-            <div class="col-md-4">
-            </br></br>
-                <a href="docs/CaSPR_CR.pdf">
-                    </br> <img class="img-responsive" width="100%" height="100%" src="images/caspr_teaser.png" alt="">
-                </a>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-8">
-                <h3>Contact and Human Dynamics from Monocular Video</h3>
-                <h4><b>D. Rempe</b>, L. Guibas, A. Hertzmann, B. Russell, R. Villegas, and J. Yang. European Conference on Computer Vision (<b>ECCV</b>), 2020.</h4> <h4 style="color:red;">Spotlight Presentation</h4>
-                <p> Existing deep models predict 2D and 3D kinematic poses from video that are approximately accurate, but contain visible errors that violate physical constraints, such as feet penetrating the ground and bodies leaning at extreme angles. In this paper, we present a physics-based method for inferring 3D human motion from video sequences that takes initial 2D and 3D pose estimates as input. We first estimate ground contact timings with a novel prediction network which is trained without hand-labeled data. A physics-based trajectory optimization then solves for a physically-plausible motion, based on the inputs. We show this process produces motions that are significantly more realistic than those from purely kinematic methods, substantially improving quantitative measures of both kinematic and dynamic plausibility. We demonstrate our method on character animation and pose estimation tasks on dynamic motions of dancing and sports with complex contact patterns. </p>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/human-dynamics-eccv-2020/">Project Page <span class="glyphicon glyphicon-chevron-right"></span></a>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/human-dynamics-eccv-2020/content/contact-and-dynamics-2020.pdf">Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-            <div class="col-md-4">
-            </br></br></br>
-                <a href="docs/contact-and-dynamics-2020.pdf">
-                    </br> <img class="img-responsive" width="130%" height="130%" src="images/human_dynamics_teaser.png" alt="">
-                </a>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-8">
-                <h3>Predicting the Physical Dynamics of Unseen 3D Objects</h3>
-                <h4><b>D. Rempe</b>, S. Sridhar, H. Wang, and L. Guibas. Winter Conference on Applications of Computer Vision (<b>WACV</b>), 2020.</h4>
-                <p> Machines that can predict the effect of physical interactions on the dynamics of previously unseen object instances are important for creating better robots, autonomous vehicles, and interactive virtual worlds. In this work, we focus on predicting the dynamics of 3D objects on a plane that have just been subjected to an impulsive force. In particular, we predict the changes in state---3D position, rotation, velocities, and stability. Different from previous work, our approach can generalize dynamics predictions to object shapes and initial conditions that were unseen during training. Our method takes the 3D object's shape as a point cloud and its initial linear and angular velocities as input. We extract shape features and use a recurrent neural network to predict the full change in state at each time step. Our model can support training with data from both a physics engine or the real world. Experiments show that we can accurately predict the changes in state for unseen object geometries and initial conditions. </p>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/learningdynamicsWACV2020/">Project Page <span class="glyphicon glyphicon-chevron-right"></span></a>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/learningdynamicsWACV2020/content/Learning_Dynamics_WACV_2020.pdf">Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-            <div class="col-md-4">
-            </br></br></br>
-                <a href="docs/Learning_Dynamics_WACV_preprint.pdf">
-                    </br> <img class="img-responsive" src="images/wacv_dynamics_teaser.png" alt="">
-                </a>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-8">
-                <h3>Multiview Aggregation for Learning Category-Specific Shape Reconstruction</h3>
-                <h4>S. Sridhar, <b>D. Rempe</b>, J. Valentin,  S. Bouaziz, and L. Guibas. Advances in Neural Information Processing Systems (<b>NeurIPS</b>), 2019.</h4>
-                <p> We investigate the problem of learning category-specific 3D shape reconstruction from a variable number of RGB views of previously unobserved object instances. Most approaches for multiview shape reconstruction operate on sparse shape representations, or assume a fixed number of views. We present a method that can estimate dense 3D shape, and aggregate shape across multiple and varying number of input views. Given a single input view of an object instance, we propose a representation that encodes the dense shape of the visible object surface as well as the surface behind line of sight occluded by the visible surface. When multiple input views are available, the shape representation is designed to be aggregated into a single 3D shape using an inexpensive union operation. We train a 2D CNN to learn to predict this representation from a variable number of views (1 or more). We further aggregate multiview information by using permutation equivariant layers that promote order-agnostic view information exchange at the feature level. Experiments show that our approach is able to produce dense 3D reconstructions of objects that improve in quality as more views are added. </p>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/xnocs/">Project Page <span class="glyphicon glyphicon-chevron-right"></span></a>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/xnocs/pub/xnocs.pdf">Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-            <div class="col-md-4">
-            </br></br></br>
-                <a href="https://geometry.stanford.edu/projects/xnocs/">
-                    </br> <img class="img-responsive" src="images/xnocs_teaser.png" alt="">
-                </a>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-8">
-                <h3>Learning Generalizable Final-State Dynamics of 3D Rigid Objects</h3>
-                <h4><b>D. Rempe</b>, S. Sridhar, H. Wang, and L. Guibas. <b>CVPR Workshop</b> on 3D Scene Understanding for Vision, Graphics, and Robotics, 2019.</h4>
-                <p> Humans have a remarkable ability to predict the effect of physical interactions on the dynamics of objects. Endowing machines with this ability would allow important applications in areas like robotics and autonomous vehicles. In this work, we focus on predicting the dynamics of 3D rigid objects, in particular an object's final resting position and total rotation when subjected to an impulsive force. Different from previous work, our approach is capable of generalizing to unseen object shapes---an important requirement for real-world applications. To achieve this, we represent object shape as a 3D point cloud that is used as input to a neural network, making our approach agnostic to appearance variation. The design of our network is informed by an understanding of physical laws. We train our model with data from a physics engine that simulates the dynamics of a large number of shapes. Experiments show that we can accurately predict the resting position and total rotation for unseen object geometries. </p>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/learningdynamics/">Project Page <span class="glyphicon glyphicon-chevron-right"></span></a>
-                <a class="btn btn-primary" href="https://geometry.stanford.edu/projects/learningdynamics/content/Dynamics_CVPR_Workshop_CamReady.pdf">Workshop Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
-                <a class="btn btn-primary" href="https://arxiv.org/abs/1901.00466">Full Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-            <div class="col-md-4">
-                <a href="https://geometry.stanford.edu/projects/learningdynamics/">
-                    </br> <img class="img-responsive" src="images/learn_dynamics.png" alt="">
-                </a>
-            </div>
-        </div>
-
-        <hr>
-
-		<div class="row">
-            <div class="col-md-8">
-                <h3>Effectiveness of Global, Low-Degree Polynomial Transformations for GCxGC Data Alignment</h3>
-                <h4><b>D. Rempe</b>, S. Reichenbach, Q. Tao, C. Cordero, W. Rathbun, and C.A. Zini. <b>Analytical Chemistry</b>, 88(20), pp. 10028-10035, 2016.</h4>
-                <p> As columns age and differ between systems, retention times for comprehensive two-dimensional gas chromatography (GCxGC) may
-				vary between runs. In order to properly analyze GCxGC chromatograms, it often is desirable to align the retention times of
-				chromatographic features, such as analyte peaks, between chromatograms. Previous work by the authors has shown that global, low-degree
-				polynomial transformation functions – namely affine, second-degree polynomial, and third-degree polynomial – are effective for aligning
-				pairs of two-dimensional chromatograms acquired with dual second columns and detectors (GCx2GC). This work assesses the experimental performance
-				of these global methods on more general GCxGC chromatogram pairs and com- pares their performance to that of a recent, robust, local
-				alignment algorithm for GCxGC data [Gros et al., Anal. Chem. 2012, 84, 9033]. Measuring performance with the root-mean-square (RMS) residual
-				differences in retention times for matched peaks suggests that global, low-degree polynomial transformations outperform the local algorithm
-				given a sufficiently large set of alignment points, and are able to improve misalignment by over 95% based on a lower-bound benchmark of inherent
-				variability. However, with small sets of alignment points, the local method demonstrated lower error rates (although with greater computational
-				overhead). For GCxGC chromatogram pairs with only slight initial misalignment, none of the global or local methods performed well. In some cases
-				with initial misalignment near the inherent variability of the system, these methods worsened alignment, suggesting that it may be better not to
-				perform alignment in such cases. </p>
-                <a class="btn btn-primary" href="docs/publishedAC_091816.pdf">Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
-                <a class="btn btn-primary" href="docs/publishedAC_091816_supportingInfo.pdf">Supporting Info <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-            <div class="col-md-4">
-            </br></br></br>
-                <a href="docs/publishedAC_091816.pdf">
-                    </br> <img class="img-responsive" src="images/alignmentTOC_gcxgc.gif" alt="">
-                </a>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-8">
-                <h3>Alignment for Comprehensive Two-Dimensional Gas Chromatography with Dual Secondary Columns and Detectors</h3>
-                <h4>S. Reichenbach, <b>D. Rempe</b>, Q. Tao, D. Bressanello, E. Liberto, C. Bicchi, S. Balducci, and C. Cordero. <b>Analytical Chemistry</b>, 87(19), pp. 10056-10063, 2015.</h4>
-                <p> In each sample run, comprehensive two-dimensional gas chromatography with dual secondary columns and detectors (GC × 2GC) provides
-                    complementary information in two chromatograms generated by its two detectors. For example, a flame ionization detector (FID) produces
-                    data that is especially effective for quantification and a mass spectrometer (MS) produces data that is especially useful for chemical-structure
-                    elucidation and compound identification. The greater information capacity of two detectors is most useful for difficult analyses,
-                    such as metabolomics, but using the joint information offered by the two complex two-dimensional chromatograms requires data fusion.
-                    In the case that the second columns are equivalent but flow conditions vary (e.g., related to the operative pressure of their different detectors),
-                    data fusion can be accomplished by aligning the chromatographic data and/or chromatographic features such as peaks and retention-time windows.
-                    Chromatographic alignment requires a mapping from the retention times of one chromatogram to the retention times of the other chromatogram.
-                    This paper considers general issues and experimental performance for global two-dimensional mapping functions to align pairs of GC × 2GC chromatograms.
-                    Experimental results for GC × 2GC with FID and MS for metabolomic analyses of human urine samples suggest that low-degree polynomial mapping functions
-                    out-perform affine transformation (as measured by root-mean-square residuals for matched peaks) and achieve performance near a lower-bound benchmark
-                    of inherent variability. Third-degree polynomials slightly out-performed second-degree polynomials in these results, but second-degree polynomials
-                    performed nearly as well and may be preferred for parametric and computational simplicity as well as robustness. </p>
-                <a class="btn btn-primary" href="docs/publishedAC_092215.pdf">Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
-                <a class="btn btn-primary" href="docs/publishedAC_092215_supportingInfo.pdf">Supporting Info <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-            <div class="col-md-4">
-                <a href="docs/publishedAC_092215.pdf">
-                    </br> <img class="img-responsive" src="images/screenshot_gcx2gc.gif" alt=""> </br>
-                    <img class="img-responsive" src="images/screenshot2_gcx2gc.gif" alt="">
-                </a>
-            </div>
-        </div>
-
-        <hr>
-
-        <!-- /.row -->
-        <div class="row">
-            <div class="col-md-12">
-                <h3>Undergraduate Thesis</h3>
-                <h4>Advised by Stephen Scott and Stephen Reichenbach</h4>
-                <a class="btn btn-primary" href="docs/distinction-thesis.pdf">Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-        </div>
-
-        <hr>
-
-        <!-- Page Heading -->
-        <!-- <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">Other Publications and Presentations
-                </h1>
-                <h4>(<u>underline</u> indicates the presenter/s)</h4>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <h3>A Cognitive Radio TV Prototype for Effective TV Spectrum Sharing</h3>
-                <h4><b>D. Rempe</b>, M. Snyder, A. Pracht, A. Schwarz, T. Nguyen, <u>M. Vostrez</u>, <u>Z. Zhao</u>, and M.C. Vuran. 2017 IEEE International Symposium on Dynamic Spectrum Access Networks (DySPAN) (IEEE DySPAN 2017), Baltimore, MD, USA, March 6-9, 2017.</h4>
-                <a class="btn btn-primary" href="docs/dyspan2017_final_published.pdf">Demo Paper <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-        </div>
-
-        <hr> -->
-
-        <!-- <div class="row">
-            <div class="col-md-12">
-                <h3>Simple models for second-column retention-time variability across peaks from GCxGC</h3>
-                <h4> S. Reichenbach, <u><b>D. Rempe</b></u>, Q. Tao, and C. Cordero, 8th Multidimensional Chromatography Workshop, Toronto, ON, Canada, January 5-6, 2017.</h4>
-                <a class="btn btn-primary" href="docs/MDCW_20161229_4-3_noAnim.pdf">Slides <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-        </div>
-
-        <hr> -->
-
-		<!-- <div class="row">
-            <div class="col-md-12">
-                <h3>Alignment for Comprehensive Two-Dimensional Gas Chromatography (GCxGC) with Global, Low-Order Polynomial Transformations</h3>
-                <h4><u><b>D. Rempe</b></u>, S. Reichenbach, and S. Scott, UNL Spring Research Fair Poster Session, Lincoln, NE, USA, April, 2016.</h4>
-                <a class="btn btn-primary" href="docs/UNL_poster_session.pdf">Poster <span class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
-        </div>
-
-        <hr> -->
 
     </div>
     <!-- /.container -->
