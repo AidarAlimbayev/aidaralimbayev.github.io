@@ -12,11 +12,11 @@ https://aidaralimbayev.github.io/index.html
 
 ![Burgers equation](images/burger.gif)
 
-<img src="images/burger.gif" width="400"/> <img src="images/burger.gif" width="400"/>
+<img src="images/burger.gif" width="1000"/> <img src="images/burger.gif" width="1000"/>
 
 
 ### PSO:
 
 ![PSO](images/PSO.gif)
 
-<img src="images/PSO.gif" width="400"/> <img src="images/PSO.gif" width="400"/>
+<img src="images/PSO.gif" width="1000"/> <img src="images/PSO.gif" width="1000"/>
