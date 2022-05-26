@@ -10,4 +10,4 @@ https://aidaralimbayev.github.io/index.html
 
 ### Burgers equation:
 
-![Burgers equation](/images/burger.gif)
+![Burgers equation](images/burger.gif)
