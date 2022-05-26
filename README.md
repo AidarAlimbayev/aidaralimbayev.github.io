@@ -4,7 +4,10 @@ My personal web page. For research activities
 
 https://aidaralimbayev.github.io/index.html
 
+## [Getting Start](#setup-virtual-environment)
 
-![Burgers equation optimization](images/burgers.gif)
+## Some preliminary results:
 
-![particle_swarm optimization](images/PSO.gif)
+### Burgers equation:
+
+![Burgers equation](/images/burger.gif)
