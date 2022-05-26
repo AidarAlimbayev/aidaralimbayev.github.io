@@ -12,7 +12,7 @@ https://aidaralimbayev.github.io/index.html
 
 ![Burgers equation](images/burger.gif)
 
-<img src="images/burgers.gif" width="400"/> <img src="images/burgers.gif" width="400"/>
+<img src="images/burger.gif" width="400"/> <img src="images/burger.gif" width="400"/>
 
 
 ### PSO:
