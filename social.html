@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Social Media | Aidar Alimbayev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f4ff',
+              900: '#0f172a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    window.pageTranslations = {
+      en: {
+        'page.title': 'Social Media',
+        'page.lead': 'TV, press, and foundation coverage of projects and student teams.',
+        'social.tv.title': 'Qazaqstan TV — Ashyk Alan',
+        'social.tv.desc': 'Live discussion on AI impacts, job shifts, and how to teach the next generation.',
+        'social.forbes.title': 'Forbes Kazakhstan — SmartView mention',
+        'social.forbes.desc': 'SmartView Innovation students using UAVs and computer vision to spot cyanide sprinkler defects.',
+        'social.yessenov.title': 'Shakhmardan Yessenov Foundation',
+        'social.yessenov.desc': 'Fellowship story highlighting my research internship and career path.',
+        'social.astana.title': 'The Astana Times — Castelloli Smart Scooter Challenge',
+        'social.astana.desc': 'Coverage of the student team I advised that won first place in Spain (pages B1, B5).',
+        'social.nu.title': 'Nazarbayev University — Smart scooter team',
+        'social.nu.desc': 'University news about the international competition win in Barcelona.',
+        'social.nuris.title': 'NURIS Car feature',
+        'social.nuris.desc': 'Custom campus vehicle built at NURIS Machine Shop for NU’s anniversary.',
+        'page.cta': 'Back to home'
+      },
+      kk: {
+        'page.title': 'Әлеуметтік медиа',
+        'page.lead': 'Жобалар мен студенттік командалар туралы ТВ, баспасөз және қор жарияланымдары.',
+        'social.tv.title': 'Qazaqstan TV — Ашық Алан',
+        'social.tv.desc': 'AI әсері, жұмыс орындарының өзгеруі және жастарды оқыту туралы тікелей эфирдегі талқылау.',
+        'social.forbes.title': 'Forbes Kazakhstan — SmartView',
+        'social.forbes.desc': 'SmartView Innovation студенттері дрондар және компьютерлік көру арқылы цианид бүріккіштерін тексереді.',
+        'social.yessenov.title': 'Шахмардан Есенов қоры',
+        'social.yessenov.desc': 'Зерттеу тағылымдамасы мен мансап жолы туралы стипендиялық материал.',
+        'social.astana.title': 'The Astana Times — Castelloli Smart Scooter Challenge',
+        'social.astana.desc': 'Кеңес берген командам Испанияда бірінші орын алғаны туралы (B1, B5 беттері).',
+        'social.nu.title': 'Назарбаев Университеті — скутер командасы',
+        'social.nu.desc': 'Барселонадағы халықаралық жеңіс туралы университет жаңалығы.',
+        'social.nuris.title': 'NURIS Car материалы',
+        'social.nuris.desc': 'NU мерейтойына арналған кампус көлігі NURIS шеберханасында жасалды.',
+        'page.cta': 'Басты бетке'
+      },
+      ru: {
+        'page.title': 'Соцсети и СМИ',
+        'page.lead': 'Телевидение, пресса и фонды о моих проектах и студенческих командах.',
+        'social.tv.title': 'Qazaqstan TV — Ашық Алан',
+        'social.tv.desc': 'Прямой эфир о влиянии AI, рабочих местах и новом образовании.',
+        'social.forbes.title': 'Forbes Kazakhstan — SmartView',
+        'social.forbes.desc': 'Студенты SmartView Innovation используют дроны и CV для поиска дефектов распылителей цианида.',
+        'social.yessenov.title': 'Фонд Шахмардана Есенова',
+        'social.yessenov.desc': 'История стипендии и моего исследовательского стажа.',
+        'social.astana.title': 'The Astana Times — Castelloli Smart Scooter Challenge',
+        'social.astana.desc': 'Материал о команде, которую я курировал и которая заняла 1-е место в Испании (стр. B1, B5).',
+        'social.nu.title': 'Назарбаев Университет — команда скутера',
+        'social.nu.desc': 'Новость университета о победе в Барселоне.',
+        'social.nuris.title': 'Проект NURIS Car',
+        'social.nuris.desc': 'Кампус-мобиль, созданный в мастерской NURIS к юбилею NU.',
+        'page.cta': 'На главную'
+      },
+      ar: {
+        'page.title': 'التغطيات والإعلام',
+        'page.lead': 'تغطية تلفزيونية وصحفية ومنح للفرق والمشاريع.',
+        'social.tv.title': 'قناة Qazaqstan — برنامج أشِك الان',
+        'social.tv.desc': 'حوار مباشر حول أثر الذكاء الاصطناعي، الوظائف والتعليم.',
+        'social.forbes.title': 'فوربس كازاخستان — SmartView',
+        'social.forbes.desc': 'طلاب SmartView Innovation يستخدمون الطائرات بدون طيار والرؤية الحاسوبية للكشف عن أعطال الرشاشات.',
+        'social.yessenov.title': 'مؤسسة شاخماردان يسينوف',
+        'social.yessenov.desc': 'قصة منحة وزمالة البحث ومساري المهني.',
+        'social.astana.title': 'The Astana Times — تحدي السكوتر الذكي',
+        'social.astana.desc': 'تغطية لفريق الطلاب الذي أشرفت عليه وفاز بالمركز الأول في إسبانيا (الصفحات B1, B5).',
+        'social.nu.title': 'جامعة نزارباييف — فريق السكوتر',
+        'social.nu.desc': 'خبر الجامعة عن الفوز في برشلونة.',
+        'social.nuris.title': 'مشروع NURIS Car',
+        'social.nuris.desc': 'مركبة للحرم الجامعي صُنعت في ورشة NURIS لذكرى الجامعة.',
+        'page.cta': 'عودة إلى الرئيسية'
+      },
+      es: {
+        'page.title': 'Menciones',
+        'page.lead': 'Cobertura en TV, prensa y fundaciones sobre proyectos y equipos.',
+        'social.tv.title': 'Qazaqstan TV — Ashyk Alan',
+        'social.tv.desc': 'Debate en vivo sobre el impacto de la IA, empleo y educación.',
+        'social.forbes.title': 'Forbes Kazajistán — SmartView',
+        'social.forbes.desc': 'Estudiantes de SmartView Innovation usan drones y visión por computador para detectar fallas en rociadores de cianuro.',
+        'social.yessenov.title': 'Fundación Shakhmardan Yessenov',
+        'social.yessenov.desc': 'Historia de la beca y mi pasantía de investigación.',
+        'social.astana.title': 'The Astana Times — Castelloli Smart Scooter Challenge',
+        'social.astana.desc': 'Cobertura del equipo que asesoro y ganó en España (páginas B1, B5).',
+        'social.nu.title': 'Universidad Nazarbayev — equipo de scooter',
+        'social.nu.desc': 'Noticia de la universidad sobre la victoria en Barcelona.',
+        'social.nuris.title': 'Destacado de NURIS Car',
+        'social.nuris.desc': 'Vehículo del campus creado en el taller de NURIS para el aniversario de NU.',
+        'page.cta': 'Volver al inicio'
+      }
+    };
+  </script>
+  <script src="js/site.js" defer></script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100" data-page="social">
+  <header id="site-nav" class="fixed top-0 inset-x-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/90 transition-shadow">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-4">
+        <a href="index.html#about" class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="nav.brand">Aidar Alimbayev</a>
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-700 dark:text-slate-200">
+          <a href="index.html#about" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.about">About</a>
+          <a href="materials.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.materials">Materials Sciecne Research</a>
+          <a href="index.html#research" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.research">Previous Research</a>
+          <a href="social.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.social">Social Media</a>
+          <a href="#contact" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.contact">Contact</a>
+          <a href="cv.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-white shadow hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="nav.cv">View CV</a>
+        </nav>
+        <div class="flex items-center gap-2">
+          <select aria-label="Language" data-role="language-select" class="hidden sm:block rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-slate-700">
+            <option value="en">English</option>
+            <option value="kk">Kazakh</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="es">Español</option>
+          </select>
+          <button type="button" aria-label="Toggle dark mode" data-role="theme-toggle" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:text-white dark:focus:ring-slate-700">
+            <span aria-hidden="true" class="sun-icon hidden">☀️</span>
+            <span aria-hidden="true" class="moon-icon">🌙</span>
+          </button>
+          <button aria-label="Open navigation" data-role="mobile-toggle" class="md:hidden inline-flex items-center justify-center rounded-full border border-slate-200 p-2 text-slate-700 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:border-slate-700 dark:text-slate-100 dark:hover:text-white dark:focus:ring-offset-slate-900">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div data-role="mobile-menu" class="md:hidden hidden border-t border-slate-100 bg-white/95 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
+      <div class="max-w-6xl mx-auto px-4 py-4 space-y-3 text-sm font-medium text-slate-700 dark:text-slate-200">
+        <a href="index.html#about" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.about">About</a>
+        <a href="materials.html" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.materials">Materials Sciecne Research</a>
+        <a href="index.html#research" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.research">Previous Research</a>
+        <a href="social.html" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.social">Social Media</a>
+        <a href="#contact" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.contact">Contact</a>
+        <a href="cv.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-white shadow hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="nav.cv">View CV</a>
+        <div class="flex items-center gap-3 pt-3">
+          <label class="text-xs font-semibold text-slate-500 dark:text-slate-400" for="mobile-language">Language</label>
+          <select id="mobile-language" data-role="language-select" class="flex-1 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-slate-700">
+            <option value="en">English</option>
+            <option value="kk">Kazakh</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="es">Español</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 space-y-16">
+    <section class="space-y-3">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400" data-i18n="more.kicker">Explore</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white" data-i18n="page.title">Social Media</h1>
+      <p class="text-lg text-slate-700 dark:text-slate-200" data-i18n="page.lead">TV, press, and foundation coverage of projects and student teams.</p>
+    </section>
+
+    <section class="grid gap-6">
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="social.tv.title">Qazaqstan TV — Ashyk Alan</h2>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300" data-i18n="social.tv.desc">Live discussion on AI impacts, job shifts, and how to teach the next generation.</p>
+          </div>
+          <a href="https://www.youtube.com/watch?v=pg3KaerPFIc" target="_blank" rel="noreferrer" class="rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200">YouTube</a>
+        </div>
+      </article>
+
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="social.forbes.title">Forbes Kazakhstan — SmartView mention</h2>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300" data-i18n="social.forbes.desc">SmartView Innovation students using UAVs and computer vision to spot cyanide sprinkler defects.</p>
+          </div>
+          <a href="https://forbes.kz/actual/technologies/kak_startapyi_pomogayut_kompaniyam_reshat_problemyi_tehnologicheskogo_rosta_opyit_nuris/" target="_blank" rel="noreferrer" class="rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200">Link</a>
+        </div>
+      </article>
+
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="social.yessenov.title">Shakhmardan Yessenov Foundation</h2>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300" data-i18n="social.yessenov.desc">Fellowship story highlighting my research internship and career path.</p>
+          </div>
+          <a href="https://yessenovfoundation.org/en/eng-aidar-alimbayev/" target="_blank" rel="noreferrer" class="rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200">Link</a>
+        </div>
+      </article>
+
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="social.astana.title">The Astana Times — Castelloli Smart Scooter Challenge</h2>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300" data-i18n="social.astana.desc">Coverage of the student team I advised that won first place in Spain (pages B1, B5).</p>
+          </div>
+          <a href="https://astanatimes.com/wp-content/uploads/2019/07/AT-176dd.pdf" target="_blank" rel="noreferrer" class="rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200">PDF</a>
+        </div>
+      </article>
+
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="social.nu.title">Nazarbayev University — Smart scooter team</h2>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300" data-i18n="social.nu.desc">University news about the international competition win in Barcelona.</p>
+          </div>
+          <a href="https://nu.edu.kz/news/nazarbayev-university-team-won-at-the-smart-scooter-international-competition-in-barcelona" target="_blank" rel="noreferrer" class="rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200">Link</a>
+        </div>
+      </article>
+
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="social.nuris.title">NURIS Car feature</h2>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300" data-i18n="social.nuris.desc">Custom campus vehicle built at NURIS Machine Shop for NU’s anniversary.</p>
+          </div>
+          <a href="http://digest2.nu.edu.kz/electriccar" target="_blank" rel="noreferrer" class="rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200">Link</a>
+        </div>
+      </article>
+    </section>
+
+    <section id="contact" class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400" data-i18n="contact.kicker">Contact</p>
+          <h2 class="text-xl font-semibold text-slate-900 dark:text-white" data-i18n="contact.title">Let's connect</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300" data-i18n-html="contact.body">Use the form below or email me at <a class="underline" href="mailto:aidar.alimbayev@mbzuai.ac.ae">aidar.alimbayev@mbzuai.ac.ae</a>.</p>
+        </div>
+        <a href="index.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="page.cta">Back to home</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

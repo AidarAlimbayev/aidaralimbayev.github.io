@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Startups | Aidar Alimbayev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f4ff',
+              900: '#0f172a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    window.pageTranslations = {
+      en: {
+        'page.title': 'Startups',
+        'page.lead': 'Building products that connect manufacturing, design, and AI to real customers.',
+        'page.note': 'Links include live sites and current pitch decks.',
+        'startups.mena.title': 'MENAFactory',
+        'startups.mena.desc': 'Integrated platform matching manufacturers, customers, and investors to deploy and finance factories with idle capacity.',
+        'startups.mena.link': 'Visit menafactory.github.io',
+        'startups.mena.deck': 'Open pitch deck',
+        'startups.saulet.title': 'Saulet.AI',
+        'startups.saulet.desc': 'Digital ecosystem for home renovation: design automation, instant estimates, and material-aware plans for SMEs.',
+        'startups.saulet.link': 'Visit saulet.ai',
+        'startups.saulet.deck': 'Investment deck',
+        'page.cta': 'Back to home'
+      },
+      kk: {
+        'page.title': 'Стартаптар',
+        'page.lead': 'Өндіріс, дизайн және AI-ды клиенттермен байланыстыратын өнімдер.',
+        'page.note': 'Төменде тірі сайттар мен питч-дектерге сілтемелер.',
+        'startups.mena.title': 'MENAFactory',
+        'startups.mena.desc': 'Өндірушілерді, клиенттерді және инвесторларды біріктіріп, бос қуатты зауыттарды іске қосатын платформа.',
+        'startups.mena.link': 'menafactory.github.io сайты',
+        'startups.mena.deck': 'Питч-дек',
+        'startups.saulet.title': 'Saulet.AI',
+        'startups.saulet.desc': 'Жөндеу мен дизайнды сандық экожүйеге айналдыратын сервис: автоматты дизайн, лезде смета, материалға тәуелді жоспарлар.',
+        'startups.saulet.link': 'saulet.ai сайты',
+        'startups.saulet.deck': 'Инвестициялық дек',
+        'page.cta': 'Басты бетке'
+      },
+      ru: {
+        'page.title': 'Стартапы',
+        'page.lead': 'Продукты, соединяющие производство, дизайн и AI с реальными клиентами.',
+        'page.note': 'Ниже ссылки на живые сайты и питч-дек.',
+        'startups.mena.title': 'MENAFactory',
+        'startups.mena.desc': 'Интегрированная платформа, которая сводит производителей, клиентов и инвесторов и помогает запускать заводы с простаивающими мощностями.',
+        'startups.mena.link': 'Открыть menafactory.github.io',
+        'startups.mena.deck': 'Питч-дек',
+        'startups.saulet.title': 'Saulet.AI',
+        'startups.saulet.desc': 'Цифровая экосистема для ремонта и дизайна: автоматизация, быстрые сметы и планы с учетом материалов.',
+        'startups.saulet.link': 'Открыть saulet.ai',
+        'startups.saulet.deck': 'Инвест-дек',
+        'page.cta': 'На главную'
+      },
+      ar: {
+        'page.title': 'الشركات الناشئة',
+        'page.lead': 'منتجات تربط التصنيع والتصميم و الذكاء الاصطناعي بالعملاء الحقيقيين.',
+        'page.note': 'الروابط تشمل المواقع الحية وعروض المستثمرين.',
+        'startups.mena.title': 'MENAFactory',
+        'startups.mena.desc': 'منصة متكاملة تربط المصنعين والعملاء والمستثمرين لتشغيل المصانع وتمويلها.',
+        'startups.mena.link': 'زيارة menafactory.github.io',
+        'startups.mena.deck': 'عرض pitch',
+        'startups.saulet.title': 'Saulet.AI',
+        'startups.saulet.desc': 'منظومة رقمية لتجديد المنازل: أتمتة التصميم، تقديرات فورية وخطط مرتبطة بالمواد للشركات الصغيرة.',
+        'startups.saulet.link': 'زيارة saulet.ai',
+        'startups.saulet.deck': 'عرض المستثمرين',
+        'page.cta': 'عودة إلى الرئيسية'
+      },
+      es: {
+        'page.title': 'Startups',
+        'page.lead': 'Productos que conectan fabricación, diseño y IA con clientes reales.',
+        'page.note': 'Incluye enlaces a sitios en vivo y pitch decks.',
+        'startups.mena.title': 'MENAFactory',
+        'startups.mena.desc': 'Plataforma integrada que une fabricantes, clientes e inversionistas para usar capacidad ociosa y financiar fábricas.',
+        'startups.mena.link': 'Visitar menafactory.github.io',
+        'startups.mena.deck': 'Pitch deck',
+        'startups.saulet.title': 'Saulet.AI',
+        'startups.saulet.desc': 'Ecosistema digital para reformas: diseño automatizado, presupuestos al instante y planes con materiales reales.',
+        'startups.saulet.link': 'Visitar saulet.ai',
+        'startups.saulet.deck': 'Deck de inversión',
+        'page.cta': 'Volver al inicio'
+      }
+    };
+  </script>
+  <script src="js/site.js" defer></script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100" data-page="startups">
+  <header id="site-nav" class="fixed top-0 inset-x-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/90 transition-shadow">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-4">
+        <a href="index.html#about" class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="nav.brand">Aidar Alimbayev</a>
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-700 dark:text-slate-200">
+          <a href="index.html#about" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.about">About</a>
+          <a href="materials.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.materials">Materials Sciecne Research</a>
+          <a href="index.html#research" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.research">Previous Research</a>
+          <a href="social.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.social">Social Media</a>
+          <a href="#contact" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.contact">Contact</a>
+          <a href="cv.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-white shadow hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="nav.cv">View CV</a>
+        </nav>
+        <div class="flex items-center gap-2">
+          <select aria-label="Language" data-role="language-select" class="hidden sm:block rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-slate-700">
+            <option value="en">English</option>
+            <option value="kk">Kazakh</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="es">Español</option>
+          </select>
+          <button type="button" aria-label="Toggle dark mode" data-role="theme-toggle" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:text-white dark:focus:ring-slate-700">
+            <span aria-hidden="true" class="sun-icon hidden">☀️</span>
+            <span aria-hidden="true" class="moon-icon">🌙</span>
+          </button>
+          <button aria-label="Open navigation" data-role="mobile-toggle" class="md:hidden inline-flex items-center justify-center rounded-full border border-slate-200 p-2 text-slate-700 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:border-slate-700 dark:text-slate-100 dark:hover:text-white dark:focus:ring-offset-slate-900">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div data-role="mobile-menu" class="md:hidden hidden border-t border-slate-100 bg-white/95 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
+      <div class="max-w-6xl mx-auto px-4 py-4 space-y-3 text-sm font-medium text-slate-700 dark:text-slate-200">
+        <a href="index.html#about" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.about">About</a>
+        <a href="materials.html" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.materials">Materials Sciecne Research</a>
+        <a href="index.html#research" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.research">Previous Research</a>
+        <a href="social.html" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.social">Social Media</a>
+        <a href="#contact" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.contact">Contact</a>
+        <a href="cv.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-white shadow hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="nav.cv">View CV</a>
+        <div class="flex items-center gap-3 pt-3">
+          <label class="text-xs font-semibold text-slate-500 dark:text-slate-400" for="mobile-language">Language</label>
+          <select id="mobile-language" data-role="language-select" class="flex-1 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-slate-700">
+            <option value="en">English</option>
+            <option value="kk">Kazakh</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="es">Español</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 space-y-16">
+    <section class="space-y-3">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400" data-i18n="more.kicker">Explore</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white" data-i18n="page.title">Startups</h1>
+      <p class="text-lg text-slate-700 dark:text-slate-200" data-i18n="page.lead">Building products that connect manufacturing, design, and AI to real customers.</p>
+      <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="page.note">Links include live sites and current pitch decks.</p>
+    </section>
+
+    <section class="grid gap-8 md:grid-cols-2">
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-white" data-i18n="startups.mena.title">MENAFactory</h2>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300" data-i18n="startups.mena.desc">Integrated platform matching manufacturers, customers, and investors to deploy and finance factories with idle capacity.</p>
+          </div>
+          <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-indigo-900/30 dark:text-slate-100">Manufacturing</span>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-3 text-sm font-semibold text-slate-900 dark:text-white">
+          <a href="https://menafactory.github.io" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 hover:-translate-y-0.5 hover:border-slate-400 dark:border-slate-700 dark:hover:border-slate-500" data-i18n="startups.mena.link">Visit menafactory.github.io</a>
+          <a href="docs/MENAFactory_Pitchdeck_First.pdf" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-white hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="startups.mena.deck">Open pitch deck</a>
+        </div>
+      </article>
+
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-white" data-i18n="startups.saulet.title">Saulet.AI</h2>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300" data-i18n="startups.saulet.desc">Digital ecosystem for home renovation: design automation, instant estimates, and material-aware plans for SMEs.</p>
+          </div>
+          <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-emerald-900/30 dark:text-slate-100">AI Design</span>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-3 text-sm font-semibold text-slate-900 dark:text-white">
+          <a href="https://saulet.ai" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 hover:-translate-y-0.5 hover:border-slate-400 dark:border-slate-700 dark:hover:border-slate-500" data-i18n="startups.saulet.link">Visit saulet.ai</a>
+          <a href="docs/Saulet.AI_Investment_DeckEng.pdf" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-white hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="startups.saulet.deck">Investment deck</a>
+        </div>
+      </article>
+    </section>
+
+    <section id="contact" class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400" data-i18n="contact.kicker">Contact</p>
+          <h2 class="text-xl font-semibold text-slate-900 dark:text-white" data-i18n="contact.title">Let's connect</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300" data-i18n-html="contact.body">Use the form below or email me at <a class="underline" href="mailto:aidar.alimbayev@mbzuai.ac.ae">aidar.alimbayev@mbzuai.ac.ae</a>.</p>
+        </div>
+        <a href="index.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="page.cta">Back to home</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

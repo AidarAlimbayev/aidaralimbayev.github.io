@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Materials Sciecne Research | Aidar Alimbayev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f4ff',
+              900: '#0f172a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    window.pageTranslations = {
+      en: {
+        'page.title': 'Materials Sciecne Research',
+        'page.lead': 'Updates and demos from my MBZUAI Materials Sciecne Research on physics-informed and data-driven models for molecules and crystals.',
+        'materials.focus.title': 'Research focus',
+        'materials.focus.body': 'Physics-informed neural networks, graph learning, and quantum-informed modeling for property prediction.',
+        'materials.upcoming.title': 'Upcoming demos',
+        'materials.upcoming.body': 'Interactive examples, baselines, and datasets as experiments mature. Collaborators welcome.',
+        'page.cta': 'Back to home',
+        'hero.ctaEmail': 'Email',
+        'materials.ctaScholar': 'View Google Scholar'
+      },
+      kk: {
+        'page.title': 'Материалдар ғылымы зерттеуі',
+        'page.lead': 'MBZUAI-де материалдар бойынша физикаға негізделген және деректерге сүйенген модельдер туралы жаңартулар мен демолар.',
+        'materials.focus.title': 'Зерттеу бағыты',
+        'materials.focus.body': 'PINN, графтық оқыту және кванттық модельдер материал қасиеттерін болжау үшін.',
+        'materials.upcoming.title': 'Жақын арада',
+        'materials.upcoming.body': 'Эксперименттер жетілген сайын интерактивті мысалдар, базалық көрсеткіштер және деректер жиындары.',
+        'page.cta': 'Басты бетке',
+        'hero.ctaEmail': 'Эл. пошта',
+        'materials.ctaScholar': 'Google Scholar'
+      },
+      ru: {
+        'page.title': 'Исследования по материаловедению',
+        'page.lead': 'Обновления и демо по моим исследованиям в MBZUAI: физически обоснованные и датасет-ориентированные модели для молекул и кристаллов.',
+        'materials.focus.title': 'Фокус исследований',
+        'materials.focus.body': 'PINN, графовые модели и квантово-информированные подходы для прогнозирования свойств.',
+        'materials.upcoming.title': 'Готовим к релизу',
+        'materials.upcoming.body': 'Интерактивные примеры, бенчмарки и датасеты по мере готовности. Буду рад сотрудничеству.',
+        'page.cta': 'На главную',
+        'hero.ctaEmail': 'Почта',
+        'materials.ctaScholar': 'Google Scholar'
+      },
+      ar: {
+        'page.title': 'أبحاث علوم المواد',
+        'page.lead': 'تحديثات وعروض حول عملي في MBZUAI: نماذج مدفوعة بالفيزياء والبيانات لتنبؤ خصائص الجزيئات والبلورات.',
+        'materials.focus.title': 'تركيز البحث',
+        'materials.focus.body': 'PINN، التعلم على الرسوم، ونماذج مستوحاة من الكم لتنبؤ الخصائص.',
+        'materials.upcoming.title': 'عروض قادمة',
+        'materials.upcoming.body': 'أمثلة تفاعلية ومجموعات بيانات عندما تصبح التجارب جاهزة. مرحب بالتعاون.',
+        'page.cta': 'عودة إلى الرئيسية',
+        'hero.ctaEmail': 'البريد',
+        'materials.ctaScholar': 'Google Scholar'
+      },
+      es: {
+        'page.title': 'Investigación en ciencia de materiales',
+        'page.lead': 'Actualizaciones y demos de mi trabajo en MBZUAI sobre modelos basados en física y datos para moléculas y cristales.',
+        'materials.focus.title': 'Enfoque de investigación',
+        'materials.focus.body': 'PINN, aprendizaje en grafos y modelos informados por física para predicción de propiedades.',
+        'materials.upcoming.title': 'Próximos demos',
+        'materials.upcoming.body': 'Ejemplos interactivos, benchmarks y datasets a medida que avancen los experimentos.',
+        'page.cta': 'Volver al inicio',
+        'hero.ctaEmail': 'Correo',
+        'materials.ctaScholar': 'Google Scholar'
+      }
+    };
+  </script>
+  <script src="js/site.js" defer></script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100" data-page="materials">
+  <header id="site-nav" class="fixed top-0 inset-x-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/90 transition-shadow">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-4">
+        <a href="index.html#about" class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="nav.brand">Aidar Alimbayev</a>
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-700 dark:text-slate-200">
+          <a href="index.html#about" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.about">About</a>
+          <a href="materials.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.materials">Materials Sciecne Research</a>
+          <a href="index.html#research" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.research">Previous Research</a>
+          <a href="social.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.social">Social Media</a>
+          <a href="#contact" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.contact">Contact</a>
+          <a href="cv.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-white shadow hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="nav.cv">View CV</a>
+        </nav>
+        <div class="flex items-center gap-2">
+          <select aria-label="Language" data-role="language-select" class="hidden sm:block rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-slate-700">
+            <option value="en">English</option>
+            <option value="kk">Kazakh</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="es">Español</option>
+          </select>
+          <button type="button" aria-label="Toggle dark mode" data-role="theme-toggle" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:text-white dark:focus:ring-slate-700">
+            <span aria-hidden="true" class="sun-icon hidden">☀️</span>
+            <span aria-hidden="true" class="moon-icon">🌙</span>
+          </button>
+          <button aria-label="Open navigation" data-role="mobile-toggle" class="md:hidden inline-flex items-center justify-center rounded-full border border-slate-200 p-2 text-slate-700 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:border-slate-700 dark:text-slate-100 dark:hover:text-white dark:focus:ring-offset-slate-900">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div data-role="mobile-menu" class="md:hidden hidden border-t border-slate-100 bg-white/95 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
+      <div class="max-w-6xl mx-auto px-4 py-4 space-y-3 text-sm font-medium text-slate-700 dark:text-slate-200">
+        <a href="index.html#about" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.about">About</a>
+        <a href="materials.html" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.materials">Materials Sciecne Research</a>
+        <a href="index.html#research" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.research">Previous Research</a>
+        <a href="social.html" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.social">Social Media</a>
+        <a href="#contact" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.contact">Contact</a>
+        <a href="cv.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-white shadow hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="nav.cv">View CV</a>
+        <div class="flex items-center gap-3 pt-3">
+          <label class="text-xs font-semibold text-slate-500 dark:text-slate-400" for="mobile-language">Language</label>
+          <select id="mobile-language" data-role="language-select" class="flex-1 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-slate-700">
+            <option value="en">English</option>
+            <option value="kk">Kazakh</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="es">Español</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 space-y-16">
+    <section class="space-y-3">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400" data-i18n="more.kicker">Explore</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white" data-i18n="page.title">Materials Sciecne Research</h1>
+      <p class="text-lg text-slate-700 dark:text-slate-200" data-i18n="page.lead">Updates and demos from my MBZUAI Materials Sciecne Research on physics-informed and data-driven models for molecules and crystals.</p>
+    </section>
+
+    <section class="grid gap-6 md:grid-cols-2">
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white" data-i18n="materials.focus.title">Research focus</h2>
+        <p class="mt-3 text-sm text-slate-600 dark:text-slate-300" data-i18n="materials.focus.body">Physics-informed neural networks, graph learning, and quantum-informed modeling for property prediction.</p>
+        <div class="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-700 dark:text-slate-200">
+          <span class="rounded-full bg-indigo-50 px-3 py-1 dark:bg-indigo-900/30">PINN</span>
+          <span class="rounded-full bg-indigo-50 px-3 py-1 dark:bg-indigo-900/30">GNN</span>
+          <span class="rounded-full bg-indigo-50 px-3 py-1 dark:bg-indigo-900/30">Quantum-informed</span>
+        </div>
+      </article>
+
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white" data-i18n="materials.upcoming.title">Upcoming demos</h2>
+        <p class="mt-3 text-sm text-slate-600 dark:text-slate-300" data-i18n="materials.upcoming.body">Interactive examples, baselines, and datasets as experiments mature. Collaborators welcome.</p>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="mailto:aidar.alimbayev@mbzuai.ac.ae" class="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="hero.ctaEmail">Email</a>
+          <a href="https://scholar.google.com/citations?user=ajFYzvIAAAAJ&hl=en" class="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-900 hover:-translate-y-0.5 hover:border-slate-400 dark:border-slate-700 dark:text-slate-100 dark:hover:border-slate-500" target="_blank" rel="noreferrer" data-i18n="materials.ctaScholar">View Google Scholar</a>
+        </div>
+      </article>
+    </section>
+
+    <section id="contact" class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400" data-i18n="contact.kicker">Contact</p>
+          <h2 class="text-xl font-semibold text-slate-900 dark:text-white" data-i18n="contact.title">Let's connect</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300" data-i18n-html="contact.body">Use the form below or email me at <a class="underline" href="mailto:aidar.alimbayev@mbzuai.ac.ae">aidar.alimbayev@mbzuai.ac.ae</a>.</p>
+        </div>
+        <a href="index.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="page.cta">Back to home</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

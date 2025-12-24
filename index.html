@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="h-full">
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HLZQ9DWBDG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HLZQ9DWBDG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-HLZQ9DWBDG');
+  </script>
 
-  gtag('config', 'G-HLZQ9DWBDG');
-</script>
-
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript" >
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
     m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
     (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
@@ -24,277 +22,199 @@
          accurateTrackBounce:true,
          webvisor:true
     });
- </script>
- <noscript><div><img src="https://mc.yandex.ru/watch/87738840" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
- <!-- /Yandex.Metrika counter -->
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/87738840" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
 
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Aidar Alimbayev — PhD student in machine learning at MBZUAI, focused on materials science, quantum-informed modeling, and physics-informed ML.">
+  <title>Aidar Alimbayev | AI Researcher</title>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Aidar Alimbayev</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="css/round-about.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-<script id="sphere-vertex-shader" type="x-shader/x-vertex">
-attribute vec4 vPosition;
-attribute vec3 vCenter;
-attribute vec4 vInitPosition;
-attribute vec3 vInitCenter;
-attribute float vBodyRadius;
-attribute float vIsPlanet;
-
-uniform mat4 sphereModelViewMatrix;
-uniform mat4 projectionMatrix;
-
-varying vec4 fPosition;
-varying vec3 fCenter;
-varying vec4 fInitPosition;
-varying vec3 fInitCenter;
-varying float fBodyRadius;
-varying float fIsPlanet;
-varying mat4 fSphereModelViewMatrix;
-
-void
-main()
-{
-    fPosition = vPosition;
-    fCenter = vCenter;
-    fInitPosition = vInitPosition;
-    fInitCenter = vInitCenter;
-    fBodyRadius = vBodyRadius;
-    fIsPlanet = vIsPlanet;
-    fSphereModelViewMatrix = sphereModelViewMatrix;
-
-    gl_Position = projectionMatrix*sphereModelViewMatrix*vPosition;
-
-}
-</script>
-
-<script id="sphere-fragment-shader" type="x-shader/x-fragment">
-precision mediump float;
-
-uniform float ambientProduct;
-uniform float diffuseProduct;
-uniform float specularProduct;
-uniform float shininess;
-
-uniform mat4 rotationMatrix;
-
-uniform vec4 lightPosition;
-
-uniform samplerCube earthTexMap;
-uniform samplerCube sunTexMap;
-
-varying vec4 fPosition;
-varying vec3 fCenter;
-varying vec4 fInitPosition;
-varying vec3 fInitCenter;
-varying float fBodyRadius;
-varying float fIsPlanet;
-varying mat4 fSphereModelViewMatrix;
-
-void
-main()
-{
-
-    vec2 fRadius = fPosition.xy - fCenter.xy;
-
-    // calculate projected position facing viewer (For lighting)
-    float xSqr = pow(abs(fPosition.x - fCenter.x), 2.0);
-    float ySqr = pow(abs(fPosition.y - fCenter.y), 2.0);
-    float projZ = sqrt(fBodyRadius*fBodyRadius - xSqr - ySqr) + fCenter.z;
-    vec4 projPos = vec4(fPosition.x, fPosition.y, projZ, 1.0);
-    // calculate normal
-    vec3 N = normalize(projPos.xyz - fCenter);
-
-    // calculate other values for shading
-    vec3 pos = (fSphereModelViewMatrix * projPos).xyz;
-    vec3 light = lightPosition.xyz;
-    vec3 L = normalize( light - pos );
-    vec3 E =  -pos;
-
-    // calculate rotated projected position (for texture)
-    float xSqrInit = pow(abs(fInitPosition.x - fInitCenter.x), 2.0);
-    float ySqrInit = pow(abs(fInitPosition.y - fInitCenter.y), 2.0);
-    float projZInit = sqrt(fBodyRadius*fBodyRadius - xSqrInit - ySqrInit) + fInitCenter.z;
-    vec4 projPosInit = vec4(fInitPosition.x, fInitPosition.y, projZInit, 1.0);
-    // calculate normal
-    vec3 initNorm = normalize(projPosInit.xyz - fInitCenter);
-    vec4 initNormHomog = vec4(initNorm.x, initNorm.y, initNorm.z, 1.0);
-    // rotate tex normal
-    vec4 texNorm = normalize(rotationMatrix*initNormHomog);
-
-    vec4 fColor;
-    if (length(fRadius) <= fBodyRadius  ) {
-        vec3 H = normalize( L + E );
-        float ambient = ambientProduct;
-        float  diffuse = diffuseProduct *  max( dot(L, N), 0.0 );
-        float  specular = specularProduct * pow( max(dot(N, H), 0.0), shininess );
-
-        if( dot(L, N) < 0.0 ) specular = 0.0;
-
-        // choose texture based on radius
-        vec4 texColor;
-        if (fIsPlanet > 0.5) {
-            texColor = textureCube(earthTexMap, texNorm.xyz);
-        } else {
-            texColor = textureCube(sunTexMap, texNorm.xyz);
-            //add yellow glow
-            texColor *= vec4(1.1, 1.5, 0.0, 1.0);
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f4ff',
+              900: '#0f172a'
+            }
+          }
         }
-
-        fColor = texColor*(ambient + diffuse) + vec4(1.0) * specular;
-        fColor.a = 1.0;
-    } else {
-        fColor = vec4(0.0, 0.0, 0.0, 0.0);
+      }
     }
-
-    gl_FragColor = fColor;
-}
-</script>
-
-<style>
-#gl-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-.container {
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
-    padding: 20px;
-    color: white !important;
-}
-a {
-    color: #a0a0ff !important;
-}
-.page-header {
-    color: white;
-}
-</style>
-
+  </script>
+  <script>
+    window.pageTranslations = {
+      en: {},
+      kk: {},
+      ru: {},
+      ar: {},
+      es: {}
+    };
+  </script>
+  <script src="js/site.js" defer></script>
 </head>
 
-<body>
-<canvas id="gl-canvas" width="900" height="900">
-Oops ... your browser doesn't support the HTML5 canvas element
-</canvas>
-
-<img id = "earth_pos_y" src = "CSCE470/finalProject/textures/world_cube_pos_y.png" style="display: none;"></img>
-<img id = "earth_pos_x" src = "CSCE470/finalProject/textures/world_cube_pos_x.png" style="display: none;"></img>
-<img id = "earth_pos_z" src = "CSCE470/finalProject/textures/world_cube_pos_z.png" style="display: none;"></img>
-<img id = "earth_neg_y" src = "CSCE470/finalProject/textures/world_cube_neg_y.png" style="display: none;"></img>
-<img id = "earth_neg_x" src = "CSCE470/finalProject/textures/world_cube_neg_x.png" style="display: none;"></img>
-<img id = "earth_neg_z" src = "CSCE470/finalProject/textures/world_cube_neg_z.png" style="display: none;"></img>
-
-<img id = "sun_neg_y" src = "CSCE470/finalProject/textures/sun_cube_neg_y.png" style="display: none;"></img>
-<img id = "sun_neg_x" src = "CSCE470/finalProject/textures/sun_cube_neg_x.png" style="display: none;"></img>
-<img id = "sun_neg_z" src = "CSCE470/finalProject/textures/sun_cube_neg_z.png" style="display: none;"></img>
-<img id = "sun_pos_y" src = "CSCE470/finalProject/textures/sun_cube_pos_y.png" style="display: none;"></img>
-<img id = "sun_pos_x" src = "CSCE470/finalProject/textures/sun_cube_pos_x.png" style="display: none;"></img>
-<img id = "sun_pos_z" src = "CSCE470/finalProject/textures/sun_cube_pos_z.png" style="display: none;"></img>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">About</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="projects.html">Projects</a>
-                    </li>
-                    <li>
-                        <a href="publications.html">Research</a>
-                    </li>
-                    <li>
-                        <a href="cv.html">CV</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100" data-page="home">
+  <header id="site-nav" class="fixed top-0 inset-x-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/90 transition-shadow">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-4">
+        <a href="#about" class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="nav.brand">Aidar Alimbayev</a>
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-700 dark:text-slate-200">
+          <a href="#about" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.about">About</a>
+          <a href="materials.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.materials">Materials Sciecne Research</a>
+          <a href="previous-research.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.research">Previous Research</a>
+          <a href="social.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.social">Social Media</a>
+          <a href="#contact" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.contact">Contact</a>
+          <a href="cv.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-white shadow hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="nav.cv">View CV</a>
+        </nav>
+        <div class="flex items-center gap-2">
+          <select aria-label="Language" data-role="language-select" class="hidden sm:block rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-slate-700">
+            <option value="en">English</option>
+            <option value="kk">Kazakh</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="es">Español</option>
+          </select>
+          <button type="button" aria-label="Toggle dark mode" data-role="theme-toggle" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:text-white dark:focus:ring-slate-700">
+            <span aria-hidden="true" class="sun-icon hidden">☀️</span>
+            <span aria-hidden="true" class="moon-icon">🌙</span>
+          </button>
+          <button aria-label="Open navigation" data-role="mobile-toggle" class="md:hidden inline-flex items-center justify-center rounded-full border border-slate-200 p-2 text-slate-700 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:border-slate-700 dark:text-slate-100 dark:hover:text-white dark:focus:ring-offset-slate-900">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
         </div>
-        <!-- /.container -->
-    </nav>
-
-    <!-- Page Content -->
-    <div class="container">
-
-        <!-- Introduction Row -->
-        <div class="row">
-            <h1 class="page-header">Aidar Alimbayev
-            </h1>
-            <div class="col-lg-3 col-sm-6 text-center">
-                <img class="img-rounded img-responsive img-left" src="images/aidar.jpg" alt=""">
-            </div>
-            <div class="col-md-8">
-                <p style="font-size:125%;"> I am an electronics engineer with experience in programming and teaching. Currently I am working as Machine Learning Engineer at Nazarbayev University advised by <a href="https://nu.edu.kz/faculty/amin-zollanvari">Amin Zollanvari</a>. I am generally interested in Machine Learning and Data Science</p>
-                </br>
-                <p>I am grateful to be supported by the <a href="hhttps://yessenovfoundation.org/en/o-fonde/programmyi/nauka/nauchnyie-stazhirovki-v-laboratoriyah-mira/programma-nauchnyh-stazhirovok-v-laboratoriyah-mira-2022/">“RESEARCH INTERNSHIP IN WORLD LABORATORIES” COMPETITION </a> of <a href="https://yessenovfoundation.org/en/">The Shakhmardan Yessenov Science and Education Foundation.</a></p>
-                <p> I received my undergraduate degree from the S.Seifullin University with a B.S. in Radioengineering, Electronics and Telecomminications. I also received my MSc degree in State University of Telecomminication named after M.A. Bonch-Bruevich in Saint-Petersburg, Russia. </p>
-                </br></br>
-                I enjoy rowing, running and matrial arts.
-                </br></br>
-                <b>Email:</b> aidar.alimbayev [at] nu [dot] edu [dot] kz
-                </p>
-                <div class="col-lg-1 col-sm-1 text-center">
-                    <a href="https://github.com/AidarAlimbayev"><img class="img-rounded img-responsive img-left" src="images/GitHub-Mark-120px-plus.png" alt=""></a>
-                </div>
-                <div class="col-lg-1 col-sm-1 text-center">
-                    <a href="https://www.linkedin.com/in/aidar-alimbayev-067b7910a/"><img class="img-rounded img-responsive img-left" src="images/In-2C-121px-R.png" alt=""></a>
-                </div>
-                <div class="col-lg-1 col-sm-1 text-center">
-                    <a href="https://www.instagram.com/aidar.alimbayev/"><img class="img-rounded img-responsive img-left" src="images/instagram_logo.jpeg" alt=""></a>
-                </div>
-
-                
-            </div>
-        </div>
-
-        <hr>
-
-
+      </div>
     </div>
-    <!-- /.container -->
+    <div data-role="mobile-menu" class="md:hidden hidden border-t border-slate-100 bg-white/95 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
+      <div class="max-w-6xl mx-auto px-4 py-4 space-y-3 text-sm font-medium text-slate-700 dark:text-slate-200">
+        <a href="#about" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.about">About</a>
+        <a href="materials.html" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.materials">Materials Sciecne Research</a>
+        <a href="previous-research.html" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.research">Previous Research</a>
+        <a href="social.html" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.social">Social Media</a>
+        <a href="#contact" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.contact">Contact</a>
+        <a href="cv.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-white shadow hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="nav.cv">View CV</a>
+        <div class="flex items-center gap-3 pt-3">
+          <label class="text-xs font-semibold text-slate-500 dark:text-slate-400" for="mobile-language">Language</label>
+          <select id="mobile-language" data-role="language-select" class="flex-1 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-slate-700">
+            <option value="en">English</option>
+            <option value="kk">Kazakh</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="es">Español</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 space-y-24">
+    <section id="about" class="grid gap-12 md:grid-cols-2 items-center">
+      <div class="space-y-6">
+        <div class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-700 dark:bg-slate-800 dark:text-slate-200" data-i18n="hero.badge">PhD Student · Machine Learning</div>
+        <div class="space-y-3">
+          <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white" data-i18n="hero.name">Aidar Alimbayev</h1>
+          <p class="text-lg text-slate-700 dark:text-slate-200" data-i18n-html="hero.lead">I am a PhD student in Machine Learning at <a href="https://mbzuai.ac.ae/" class="underline decoration-slate-300 underline-offset-4 hover:text-slate-900 dark:decoration-slate-600 dark:hover:text-white">Mohamed bin Zayed University of Artificial Intelligence (MBZUAI)</a>, Abu Dhabi, with a research focus on applying machine learning to materials science and quantum chemistry. I am a member of the Materials Science research group under the supervision of <a href="https://mtakac.com/" class="underline decoration-slate-300 underline-offset-4 hover:text-slate-900 dark:decoration-slate-600 dark:hover:text-white">Prof. Martin Takáč</a> (see his personal page at mtakac.com and the <a href="https://mbzuai.ac.ae/study/faculty/martin-takac/" class="underline decoration-slate-300 underline-offset-4 hover:text-slate-900 dark:decoration-slate-600 dark:hover:text-white">MBZUAI faculty page</a>).</p>
+          <p class="text-base text-slate-600 dark:text-slate-300" data-i18n-html="hero.research">Our research explores several physics-informed and data-driven approaches for predicting physical properties of molecules and crystalline materials. Selected demos and examples of our work are available on the <a href="materials.html" class="underline decoration-slate-300 underline-offset-4 hover:text-slate-900 dark:decoration-slate-600 dark:hover:text-white">Materials Sciecne Research page</a> of this website.</p>
+          <p class="text-base text-slate-600 dark:text-slate-300" data-i18n="hero.previous">Previously, I worked as an engineer at the NURIS Fab Lab, where I mentored students and early-stage startups, supporting the development of hardware and AI-driven prototypes.</p>
+          <p class="text-base text-slate-600 dark:text-slate-300" data-i18n-html="hero.journey">My journey into machine learning began with a health data research project supported by Prof. <a href="https://www.linkedin.com/in/aminzollanvari/" class="underline decoration-slate-300 underline-offset-4 hover:text-slate-900 dark:decoration-slate-600 dark:hover:text-white">Amin Zollanvari</a> and Prof. <a href="https://www.linkedin.com/in/abduzhappar-gaipov-2667b7130/" class="underline decoration-slate-300 underline-offset-4 hover:text-slate-900 dark:decoration-slate-600 dark:hover:text-white">Abduzhappar Gaipov</a> at the Nazarbayev University School of Medicine (NUSOM). You can read our paper in <a href="https://www.nature.com/articles/s41598-023-35551-4" class="underline decoration-slate-300 underline-offset-4 hover:text-slate-900 dark:decoration-slate-600 dark:hover:text-white">Nature</a>.</p>
+          <p class="text-base text-slate-600 dark:text-slate-300" data-i18n-html="hero.visiting">I was also a visiting scholar at Texas A&amp;M University, where I developed physics-informed neural networks under the supervision of <a href="https://engineering.tamu.edu/electrical/profiles/ubraganeto.html" class="underline decoration-slate-300 underline-offset-4 hover:text-slate-900 dark:decoration-slate-600 dark:hover:text-white">Prof. Ulisses Braga-Neto</a>. This research visit was funded by a <a href="https://yessenovfoundation.org/en/eng-aidar-alimbayev/" class="underline decoration-slate-300 underline-offset-4 hover:text-slate-900 dark:decoration-slate-600 dark:hover:text-white">Shakhmardan Yessenov Foundation Fellowship Program</a>.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="docs/CV_Aidar_Alimbayev_internships_PhD.pdf" class="inline-flex items-center justify-center rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/10 transition hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="hero.ctaCv">Download CV</a>
+          <a href="mailto:aidar.alimbayev@mbzuai.ac.ae" class="inline-flex items-center justify-center rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:border-slate-400 dark:border-slate-700 dark:text-slate-100 dark:hover:border-slate-500" data-i18n="hero.ctaEmail">Email</a>
+          <a href="materials.html" class="inline-flex items-center justify-center rounded-full border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:border-slate-400 dark:border-slate-700 dark:text-slate-100 dark:hover:border-slate-500" data-i18n="hero.ctaMaterials">Materials Sciecne Research page</a>
+        </div>
+        <div class="flex flex-wrap gap-4 text-sm text-slate-600 dark:text-slate-300">
+          <a href="https://github.com/AidarAlimbayev" class="inline-flex items-center gap-2 hover:text-slate-900 dark:hover:text-white" aria-label="GitHub">
+            <span class="h-2 w-2 rounded-full bg-green-500"></span> GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/aidar-alimbayev-067b7910a/" class="inline-flex items-center gap-2 hover:text-slate-900 dark:hover:text-white" aria-label="LinkedIn">
+            <span class="h-2 w-2 rounded-full bg-sky-500"></span> LinkedIn
+          </a>
+          <a href="https://www.instagram.com/aidar.alimbayev/" class="inline-flex items-center gap-2 hover:text-slate-900 dark:hover:text-white" aria-label="Instagram">
+            <span class="h-2 w-2 rounded-full bg-pink-500"></span> Instagram
+          </a>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="hero.interests">Interests: rowing, marathon training, and building resilient hardware.</p>
+      </div>
+      <div class="flex justify-center">
+        <div class="relative">
+          <div class="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-100 via-slate-100 to-white blur-2xl dark:from-indigo-900/30 dark:via-slate-900 dark:to-slate-950"></div>
+          <img src="images/aidar.jpg" alt="Portrait of Aidar Alimbayev" class="relative h-72 w-72 rounded-full object-cover border-8 border-white shadow-2xl shadow-slate-900/10 dark:border-slate-800" />
+        </div>
+      </div>
+    </section>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <section id="materials" class="space-y-8">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="space-y-2">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400" data-i18n="materials.kicker">Materials Sciecne Research</p>
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white" data-i18n="materials.title">Materials Sciecne Research @ MBZUAI</h2>
+          <p class="text-base text-slate-700 dark:text-slate-300" data-i18n="materials.body">Physics-informed and data-driven models for molecules and crystalline materials, with updates, demos, and benchmarks.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="materials.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="materials.ctaPrimary">Open Materials Sciecne Research page</a>
+          <a href="https://scholar.google.com/citations?user=ajFYzvIAAAAJ&hl=en" class="inline-flex items-center rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:border-slate-400 dark:border-slate-700 dark:text-slate-100 dark:hover:border-slate-500" target="_blank" rel="noreferrer" data-i18n="materials.ctaSecondary">View Google Scholar</a>
+        </div>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2">
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="materials.focus.title">Physics-informed + data-driven</h3>
+          <p class="mt-3 text-sm text-slate-700 dark:text-slate-300" data-i18n="materials.focus.body">Hybrid models for property prediction across molecules and crystals, integrating domain priors with graph-based learning.</p>
+        </article>
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="materials.demos.title">Benchmarks and demos</h3>
+          <p class="mt-3 text-sm text-slate-700 dark:text-slate-300" data-i18n="materials.demos.body">Follow along for curated datasets, baselines, and interactive examples as we release new experiments.</p>
+        </article>
+      </div>
+    </section>
 
-    <!-- nBody simulation scripts -->
-    <script type="text/javascript" src="CSCE470/finalProject/Common/webgl-utils.js"></script>
-    <script type="text/javascript" src="CSCE470/finalProject/Common/initShaders.js"></script>
-    <script type="text/javascript" src="CSCE470/finalProject/Common/MV.js"></script>
-    <script type="text/javascript" src="CSCE470/finalProject/src/nBody_sim_background.js"></script>
+
+    <section id="contact" class="space-y-6">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400" data-i18n="contact.kicker">Contact</p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white" data-i18n="contact.title">Let's connect</h2>
+        <p class="text-sm text-slate-600 dark:text-slate-300" data-i18n-html="contact.body">Use the form below or email me at <a class="underline" href="mailto:aidar.alimbayev@mbzuai.ac.ae">aidar.alimbayev@mbzuai.ac.ae</a>.</p>
+      </div>
+      <form id="contact-form" action="https://formspree.io/f/mnqeqodl" method="POST" class="space-y-4 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800" novalidate>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-200" for="name" data-i18n="contact.name">Name
+            <input id="name" name="name" type="text" required aria-required="true" aria-label="Your name" class="mt-2 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:ring-slate-700" placeholder="Your name">
+          </label>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-200" for="email" data-i18n="contact.email">Email
+            <input id="email" name="email" type="email" required aria-required="true" aria-label="Your email address" class="mt-2 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:ring-slate-700" placeholder="you@example.com">
+          </label>
+        </div>
+        <label class="block text-sm font-medium text-slate-700 dark:text-slate-200" for="message" data-i18n="contact.message">Message
+          <textarea id="message" name="message" rows="4" required aria-required="true" aria-label="Your message" class="mt-2 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:focus:ring-slate-700" placeholder="How can I help?"></textarea>
+        </label>
+        <div class="flex flex-wrap items-center gap-3">
+          <button type="submit" class="inline-flex items-center justify-center rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/10 transition hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="contact.submit">Send message</button>
+          <p id="form-status" class="text-sm text-slate-600 dark:text-slate-300" aria-live="polite"></p>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white/90 py-8 dark:border-slate-800 dark:bg-slate-900/90">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-slate-600 dark:text-slate-300">
+      <p>© <span id="year"></span> <span data-i18n="nav.brand">Aidar Alimbayev</span>. <span data-i18n="footer.role">AI researcher &amp; builder.</span></p>
+      <div class="flex flex-wrap gap-4">
+        <a href="https://github.com/AidarAlimbayev" class="hover:text-slate-900 dark:hover:text-white">GitHub</a>
+        <a href="https://www.linkedin.com/in/aidar-alimbayev-067b7910a/" class="hover:text-slate-900 dark:hover:text-white">LinkedIn</a>
+        <a href="https://www.instagram.com/aidar.alimbayev/" class="hover:text-slate-900 dark:hover:text-white">Instagram</a>
+        <a href="materials.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.materials">Materials Sciecne Research</a>
+      </div>
+    </div>
+  </footer>
 </body>
-
 </html>
