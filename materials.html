@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Materials Science Research | Aidar Alimbayev</title>
+  <meta name="description" content="An interactive time map of machine-learning force fields and molecular property models, 1968–2026: 221 methods, 85 benchmarks with current leaders, research groups, and open problems.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,7 +35,14 @@
         'materials.upcoming.body': 'Interactive examples, baselines, and datasets as experiments mature. Collaborators welcome.',
         'page.cta': 'Back to home',
         'hero.ctaEmail': 'Email',
-        'materials.ctaScholar': 'View Google Scholar'
+        'materials.ctaScholar': 'View Google Scholar',
+        /* --- MLIP map section. English-only on purpose: js/site.js falls back to
+               the `en` string for any key a language is missing, so all five
+               languages keep working. Add 'kk'/'ru'/'ar'/'es' entries in the
+               blocks below if you want it translated in your own words. --- */
+        'mlip.kicker': 'Interactive demo',
+        'mlip.title': 'The (ML) force field family tree',
+        'mlip.lead': 'A time map of how atoms became numbers \u2014 every representation trunk from Lifson\u2019s 1968 consistent force field to the universal foundation models of 2026, the benchmarks that rank them, the groups that build them, and the problems still open.'
       },
       kk: {
         'page.title': 'Материалдар ғылымы зерттеуі',
@@ -83,6 +91,460 @@
     };
   </script>
   <script src="js/site.js" defer></script>
+  <script src="js/mlip-map.js" defer></script>
+
+  <style>
+  /* ======================================================================
+     MLIP family tree. Rules are scoped to #mlip-map / #mmRail so nothing
+     leaks into the rest of the site; only the --mm-* custom properties are
+     defined at :root, because the detail drawer is position:fixed and must
+     live outside #mlip-map — it would not inherit them otherwise.
+     Palette follows the site: slate neutrals, indigo accent, Space Grotesk.
+     The six trunk hues are data, not decoration — they encode which
+     representation a method uses, carried over from the source figure.
+     ====================================================================== */
+  :root {
+    --mm-bg:        #f8fafc;
+    --mm-surface:   #ffffff;
+    --mm-surface-2: #f1f5f9;
+    --mm-ink:       #0f172a;
+    --mm-ink-2:     #475569;
+    --mm-ink-3:     #64748b;
+    --mm-rule:      #e2e8f0;
+    --mm-rule-2:    #cbd5e1;
+
+    --mm-accent:      #4f46e5;
+    --mm-accent-soft: #eef2ff;
+    --mm-accent-ink:  #4338ca;
+
+    --mm-global:    #be185d;
+    --mm-tuples:    #b45309;
+    --mm-harmonics: #047857;
+    --mm-cartesian: #0369a1;
+    --mm-attention: #7e22ce;
+    --mm-property:  #78716c;
+
+    --mm-global-wash:    #fdf2f8;
+    --mm-tuples-wash:    #fffbeb;
+    --mm-harmonics-wash: #ecfdf5;
+    --mm-cartesian-wash: #f0f9ff;
+    --mm-attention-wash: #faf5ff;
+    --mm-property-wash:  #f5f5f4;
+
+    --mm-mark: #e11d48;
+    --mm-warn: #b45309;
+
+    /* resting lineage web, and how far it drops back while a node is emphasised.
+       Tuned against the lane washes: the resting web reads at roughly twice the
+       year-tick rule, the muted state just below it, so it recedes without
+       vanishing. Dark needs its own pair — the trunk hues are pastels there and
+       buy ~1.2x more contrast per unit alpha against a near-black ground. */
+    --mm-edge-base: .16;
+    --mm-edge-mute: .06;
+  }
+
+  /* the timeline is inherently left-to-right; don't let the ar/rtl switch flip it */
+  #mlip-map, #mmRail { direction: ltr; }
+
+  .dark {
+    --mm-bg:        #020617;
+    --mm-surface:   #0f172a;
+    --mm-surface-2: #1e293b;
+    --mm-ink:       #f1f5f9;
+    --mm-ink-2:     #cbd5e1;
+    --mm-ink-3:     #94a3b8;
+    --mm-rule:      #1e293b;
+    --mm-rule-2:    #334155;
+
+    --mm-accent:      #818cf8;
+    --mm-accent-soft: #1e1b4b;
+    --mm-accent-ink:  #a5b4fc;
+
+    --mm-global:    #f472b6;
+    --mm-tuples:    #fbbf24;
+    --mm-harmonics: #34d399;
+    --mm-cartesian: #38bdf8;
+    --mm-attention: #c084fc;
+    --mm-property:  #a8a29e;
+
+    --mm-global-wash:    #2e1522;
+    --mm-tuples-wash:    #2c1f0f;
+    --mm-harmonics-wash: #10281c;
+    --mm-cartesian-wash: #0f2430;
+    --mm-attention-wash: #201b33;
+    --mm-property-wash:  #262117;
+
+    --mm-mark: #fb7185;
+    --mm-warn: #fbbf24;
+
+    --mm-edge-base: .11;
+    --mm-edge-mute: .04;
+  }
+
+  #mlip-map, #mmRail, #mmScrim { font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif; }
+  #mlip-map .num, #mlip-map td.num, #mlip-map .mm-yr, #mlip-map .mm-axis-tick,
+  #mmRail .num { font-variant-numeric: tabular-nums; }
+
+  #mlip-map.mm-loading .mm-tabs,
+  #mlip-map.mm-loading .mm-view { display: none; }
+  #mlip-map.mm-loading::after {
+    content: 'Loading the map…';
+    display: block; padding: 48px 0; text-align: center;
+    color: var(--mm-ink-3); font-size: 14px;
+  }
+
+  /* ---------------------------------------------------------------- header */
+  #mlip-map .mm-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--mm-rule); border: 1px solid var(--mm-rule);
+    border-radius: 1rem; overflow: hidden;
+  }
+  #mlip-map .mm-stat { background: var(--mm-surface); padding: 14px 16px; }
+  #mlip-map .mm-stat b {
+    display: block; font-size: 26px; font-weight: 700; letter-spacing: -.02em;
+    color: var(--mm-ink); font-variant-numeric: tabular-nums; line-height: 1.1;
+  }
+  #mlip-map .mm-stat span {
+    font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--mm-ink-3);
+  }
+  @media (max-width: 640px) { #mlip-map .mm-stats { grid-template-columns: repeat(2, 1fr); } }
+
+  /* ---------------------------------------------------------------- tabs */
+  #mlip-map .mm-tabs {
+    position: sticky; top: 64px; z-index: 30;
+    display: flex; gap: 6px; align-items: center;
+    padding: 10px 0; margin-bottom: 18px;
+    background: var(--mm-bg);
+    border-bottom: 1px solid var(--mm-rule);
+    overflow-x: auto; scrollbar-width: none;
+  }
+  #mlip-map .mm-tabs::-webkit-scrollbar { display: none; }
+  #mlip-map .mm-tab {
+    flex: none; cursor: pointer; white-space: nowrap;
+    font-size: 13px; font-weight: 600;
+    padding: 7px 14px; border-radius: 9999px;
+    border: 1px solid transparent; background: transparent; color: var(--mm-ink-3);
+  }
+  #mlip-map .mm-tab:hover { color: var(--mm-ink); background: var(--mm-surface-2); }
+  #mlip-map .mm-tab[aria-selected="true"] {
+    background: var(--mm-accent-soft); color: var(--mm-accent-ink); border-color: var(--mm-accent);
+  }
+  #mlip-map .mm-tab-n { opacity: .6; margin-left: 5px; font-variant-numeric: tabular-nums; }
+
+  #mlip-map .mm-view { display: none; }
+  #mlip-map .mm-view.active { display: block; }
+
+  #mlip-map h3 {
+    font-size: 20px; font-weight: 700; color: var(--mm-ink); letter-spacing: -.01em;
+    margin: 30px 0 8px;
+  }
+  #mlip-map .mm-lead { font-size: 14.5px; color: var(--mm-ink-2); max-width: 76ch; line-height: 1.6; }
+  #mlip-map .mm-lead strong { color: var(--mm-ink); font-weight: 600; }
+
+  /* ---------------------------------------------------------------- controls */
+  #mlip-map .mm-controls {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    padding: 14px 0 16px;
+  }
+  #mlip-map .mm-search {
+    font-size: 13px; flex: 1; min-width: 200px; max-width: 320px;
+    border: 1px solid var(--mm-rule-2); border-radius: 9999px;
+    background: var(--mm-surface); color: var(--mm-ink);
+    padding: 8px 14px;
+  }
+  #mlip-map .mm-search::placeholder { color: var(--mm-ink-3); }
+  #mlip-map .mm-search:focus { outline: 2px solid var(--mm-accent); outline-offset: 1px; border-color: transparent; }
+
+  #mlip-map .mm-ctl-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--mm-ink-3); margin-left: 4px;
+  }
+  #mlip-map .mm-chip {
+    font-size: 11.5px; font-weight: 600; cursor: pointer; white-space: nowrap;
+    border: 1px solid var(--mm-rule-2); background: var(--mm-surface); color: var(--mm-ink-2);
+    padding: 5px 11px; border-radius: 9999px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  #mlip-map .mm-chip:hover { border-color: var(--mm-ink-3); color: var(--mm-ink); }
+  #mlip-map .mm-sw { width: 8px; height: 8px; border-radius: 2px; background: var(--chip-c, currentColor); flex: none; }
+  #mlip-map .mm-chip[aria-pressed="true"] {
+    background: var(--chip-c, var(--mm-ink)); border-color: var(--chip-c, var(--mm-ink)); color: #fff;
+  }
+  .dark #mlip-map .mm-chip[aria-pressed="true"] { color: #020617; }
+  #mlip-map .mm-chip[aria-pressed="true"] .mm-sw { background: currentColor; }
+
+  /* ---------------------------------------------------------------- chart */
+  #mlip-map .mm-chart {
+    border: 1px solid var(--mm-rule); border-radius: 1rem;
+    background: var(--mm-surface); overflow: hidden;
+  }
+  #mlip-map .mm-scroll { overflow-x: auto; overflow-y: hidden; position: relative; }
+  #mlip-map .mm-canvas { position: relative; }
+
+  #mlip-map .mm-axis {
+    position: sticky; top: 0; z-index: 6; height: 30px;
+    background: var(--mm-surface); border-bottom: 1px solid var(--mm-rule);
+  }
+  #mlip-map .mm-axis-tick {
+    position: absolute; top: 0; height: 30px;
+    font-size: 11px; font-weight: 500; color: var(--mm-ink-3);
+    padding-left: 6px; border-left: 1px solid var(--mm-rule);
+    display: flex; align-items: center; white-space: nowrap;
+  }
+  #mlip-map .mm-lane-label {
+    position: sticky; left: 0;
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    padding: 4px 12px 4px 10px; border-radius: 0 9999px 9999px 0;
+    white-space: nowrap; pointer-events: none;
+  }
+  #mlip-map .mm-dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+
+  #mlip-map .mm-node {
+    position: absolute; display: flex; align-items: center; gap: 6px;
+    background: none; border: 0; padding: 0; margin: 0; cursor: pointer;
+    height: 22px; white-space: nowrap; z-index: 3;
+  }
+  #mlip-map .mm-bead {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--mm-surface); border: 2px solid var(--nc);
+    flex: none; transition: transform .12s ease;
+  }
+  #mlip-map .mm-node[data-shape="square"] .mm-bead { border-radius: 2px; }
+  #mlip-map .mm-node[data-shape="diamond"] .mm-bead { border-radius: 1px; transform: rotate(45deg); width: 8px; height: 8px; }
+  #mlip-map .mm-nlabel {
+    font-size: 12px; font-weight: 500; color: var(--mm-ink-2);
+    padding: 1px 5px; border-radius: 4px;
+    transition: color .12s ease, background .12s ease;
+  }
+  #mlip-map .mm-node:hover .mm-nlabel, #mlip-map .mm-node:focus-visible .mm-nlabel {
+    color: var(--mm-ink); background: var(--mm-surface-2);
+  }
+  #mlip-map .mm-node:hover .mm-bead { transform: scale(1.35); }
+  #mlip-map .mm-node[data-shape="diamond"]:hover .mm-bead { transform: rotate(45deg) scale(1.35); }
+  #mlip-map .mm-node.is-fdn .mm-nlabel { color: var(--mm-ink); font-weight: 700; }
+  #mlip-map .mm-node.is-selected .mm-nlabel { background: var(--mm-ink); color: var(--mm-surface); font-weight: 700; }
+  #mlip-map .mm-node.is-dim { opacity: .2; }
+  #mlip-map .mm-node.is-kin .mm-nlabel { background: var(--mm-accent-soft); color: var(--mm-accent-ink); }
+
+  /* The resting lineage web. Faintness lives on the group, not the individual
+     paths, so crossings composite once and the dense years stay an even wash.
+     Dropping back is quick; coming back is slower and delayed, so sweeping the
+     pointer across a crowded lane doesn't strobe the whole layer. */
+  #mlip-map .mm-edges-base {
+    opacity: var(--mm-edge-base);
+    transition: opacity .3s ease .1s;
+  }
+  #mlip-map .mm-edges-base.is-muted {
+    opacity: var(--mm-edge-mute);
+    transition: opacity .12s ease;
+  }
+  #mlip-map .mm-edges-base path { fill: none; stroke-width: 1; stroke-linecap: round; }
+  @media (prefers-reduced-motion: reduce) {
+    /* both selectors: .is-muted outranks the base rule, so it has to be named */
+    #mlip-map .mm-edges-base,
+    #mlip-map .mm-edges-base.is-muted { transition: none; }
+    /* the bead's hover scale is the only literal motion here; snap it instead of
+       dropping the transform, which would un-rotate the diamond beads */
+    #mlip-map .mm-bead { transition: none; }
+  }
+
+  #mlip-map .mm-legend {
+    display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+    padding: 10px 16px; border-top: 1px solid var(--mm-rule);
+    background: var(--mm-surface-2); font-size: 11px; font-weight: 500; color: var(--mm-ink-3);
+  }
+  #mlip-map .mm-lg { display: inline-flex; align-items: center; gap: 6px; }
+  #mlip-map .mm-demo { width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--mm-ink-3); }
+  #mlip-map .mm-demo.sq { border-radius: 2px; }
+  #mlip-map .mm-demo.di { transform: rotate(45deg); border-radius: 1px; }
+  #mlip-map .mm-ring { width: 16px; height: 16px; border-radius: 50%; border: 1.5px dashed var(--mm-mark); }
+  #mlip-map .mm-hint {
+    font-size: 11px; color: var(--mm-ink-3); padding: 8px 2px 0;
+    display: flex; gap: 14px; flex-wrap: wrap;
+  }
+
+  /* ---------------------------------------------------------------- cards */
+  #mlip-map .mm-grid { display: grid; gap: 12px; }
+  #mlip-map .mm-grid.two { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+  #mlip-map .mm-grid.three { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  #mlip-map .mm-grid.one { grid-template-columns: 1fr; }
+
+  #mlip-map .mm-card {
+    border-radius: 1rem; background: var(--mm-surface);
+    border: 1px solid var(--mm-rule); padding: 16px 18px;
+  }
+  #mlip-map .mm-card h4 { font-size: 15px; font-weight: 700; color: var(--mm-ink); margin: 0; }
+  #mlip-map .mm-card h4 a { color: var(--mm-ink); }
+  #mlip-map .mm-card h4 a:hover { color: var(--mm-accent); }
+  #mlip-map .mm-card-hd { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-bottom: 5px; }
+  #mlip-map .mm-yr { font-size: 12px; font-weight: 500; color: var(--mm-ink-3); }
+  #mlip-map .mm-body { font-size: 13.5px; line-height: 1.55; color: var(--mm-ink-2); margin: 0; }
+  #mlip-map .mm-body.lg { font-size: 14.5px; line-height: 1.6; }
+  #mlip-map .mm-pi { font-size: 13px; font-weight: 600; color: var(--mm-ink); margin-top: 2px; }
+  #mlip-map .mm-inst { font-size: 12.5px; color: var(--mm-ink-2); }
+  #mlip-map .mm-flag { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--mm-ink-3); margin-top: 3px; }
+  #mlip-map .mm-card .mm-body { margin-top: 8px; }
+
+  #mlip-map .mm-tagrow { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+  #mlip-map .mm-tag {
+    font-size: 10px; font-weight: 600; letter-spacing: .04em;
+    padding: 3px 8px; border-radius: 9999px;
+    background: var(--mm-surface-2); color: var(--mm-ink-3); border: 1px solid var(--mm-rule);
+  }
+  #mlip-map .mm-tag.trunk { background: var(--tw); color: var(--tc); border-color: transparent; font-weight: 700; }
+  #mlip-map .mm-tag.fdn { background: transparent; color: var(--mm-mark); border-color: var(--mm-mark); font-weight: 700; }
+  #mlip-map .mm-tag.unver { background: transparent; color: var(--mm-warn); border-color: var(--mm-warn); border-style: dashed; }
+
+  #mlip-map .mm-linkrow { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 11px; }
+  #mlip-map .mm-linkbtn, #mmRail .mm-linkbtn {
+    font-size: 11.5px; font-weight: 600;
+    border: 1px solid var(--mm-rule-2); border-radius: 9999px;
+    padding: 4px 11px; color: var(--mm-ink-2); background: var(--mm-surface);
+    display: inline-flex; align-items: center; gap: 4px; text-decoration: none;
+  }
+  #mlip-map .mm-linkbtn:hover, #mmRail .mm-linkbtn:hover {
+    color: var(--mm-accent); border-color: var(--mm-accent); background: var(--mm-accent-soft);
+  }
+  #mlip-map .mm-more { margin-top: 9px; cursor: pointer; }
+
+  /* ---------------------------------------------------------------- tables */
+  #mlip-map .mm-tbl, #mmRail .mm-tbl {
+    overflow-x: auto; border: 1px solid var(--mm-rule); border-radius: .75rem; margin-top: 10px;
+  }
+  #mlip-map .mm-tbl table, #mmRail .mm-tbl table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+  #mlip-map .mm-tbl th, #mmRail .mm-tbl th {
+    font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--mm-ink-3); text-align: left;
+    padding: 8px 10px; background: var(--mm-surface-2); border-bottom: 1px solid var(--mm-rule);
+    white-space: nowrap;
+  }
+  #mlip-map .mm-tbl td, #mmRail .mm-tbl td {
+    padding: 8px 10px; border-bottom: 1px solid var(--mm-rule); vertical-align: top; color: var(--mm-ink);
+  }
+  #mlip-map .mm-tbl tbody tr:last-child td, #mmRail .mm-tbl tbody tr:last-child td { border-bottom: 0; }
+  #mlip-map .mm-tbl td.num, #mmRail .mm-tbl td.num { white-space: nowrap; }
+  #mlip-map .mm-tbl td.mdl, #mmRail .mm-tbl td.mdl { font-weight: 700; white-space: nowrap; }
+  #mlip-map .mm-tbl td.dim, #mmRail .mm-tbl td.dim { color: var(--mm-ink-3); }
+  #mlip-map .mm-tbl td.first, #mmRail .mm-tbl td.first { color: var(--mm-mark); }
+  #mmRail .mm-rank { color: var(--mm-ink-3); font-variant-numeric: tabular-nums; }
+  #mmRail .mm-rank.first { color: var(--mm-mark); font-weight: 700; }
+  #mmRail .mm-note-cell { font-size: 11.5px; color: var(--mm-ink-3); padding-top: 0; }
+
+  /* ---------------------------------------------------------------- rail */
+  #mmScrim {
+    position: fixed; inset: 0; z-index: 60; background: rgba(2, 6, 23, .4);
+    opacity: 0; pointer-events: none; transition: opacity .2s ease;
+  }
+  #mmScrim.open { opacity: 1; pointer-events: auto; }
+  #mmRail {
+    position: fixed; top: 0; right: 0; bottom: 0; z-index: 61;
+    width: min(460px, 100vw);
+    background: var(--mm-surface); color: var(--mm-ink);
+    border-left: 1px solid var(--mm-rule); box-shadow: -8px 0 40px rgba(2, 6, 23, .18);
+    transform: translateX(101%); transition: transform .26s cubic-bezier(.32, .72, 0, 1);
+    display: flex; flex-direction: column;
+  }
+  #mmRail.open { transform: none; }
+  @media (prefers-reduced-motion: reduce) { #mmRail { transition: none; } }
+  #mmRailStrip { height: 3px; flex: none; }
+  #mmRailTop {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 16px 18px 12px; border-bottom: 1px solid var(--mm-rule);
+  }
+  #mmRailKicker {
+    font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--mm-ink-3);
+  }
+  #mmRailTitle { font-size: 19px; font-weight: 700; letter-spacing: -.01em; margin: 2px 0 0; }
+  #mmRailSub { font-size: 13px; color: var(--mm-ink-2); margin-top: 3px; }
+  #mmRailBody { overflow-y: auto; padding: 18px; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+  #mmRailClose {
+    flex: none; cursor: pointer; width: 32px; height: 32px; border-radius: 9999px;
+    border: 1px solid var(--mm-rule-2); background: var(--mm-surface); color: var(--mm-ink-2);
+    display: grid; place-items: center; font-size: 14px;
+  }
+  #mmRailClose:hover { color: var(--mm-ink); border-color: var(--mm-ink-3); }
+
+  #mmRail .mm-sec {
+    font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--mm-ink-3); padding-bottom: 6px; border-bottom: 1px solid var(--mm-rule); margin-bottom: 10px;
+  }
+  #mmRail .mm-fields { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+  #mmRail .mm-field { display: grid; grid-template-columns: 92px 1fr; gap: 10px; align-items: baseline; }
+  #mmRail .mm-field dt {
+    font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mm-ink-3);
+  }
+  #mmRail .mm-field dd { margin: 0; font-size: 13px; color: var(--mm-ink); }
+  #mmRail .mm-kinlist { display: flex; flex-wrap: wrap; gap: 5px; }
+  #mmRail .mm-kin {
+    font-size: 11.5px; font-weight: 600; cursor: pointer;
+    padding: 4px 9px; border-radius: 9999px; border: 1px solid var(--mm-rule-2);
+    background: var(--mm-surface); color: var(--mm-ink-2);
+  }
+  #mmRail .mm-kin:hover { border-color: var(--mm-accent); color: var(--mm-accent); background: var(--mm-accent-soft); }
+  #mmRail .mm-tagrow { display: flex; flex-wrap: wrap; gap: 5px; }
+  #mmRail .mm-tag {
+    font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 9999px;
+    background: var(--mm-surface-2); color: var(--mm-ink-3); border: 1px solid var(--mm-rule);
+  }
+  #mmRail .mm-body { font-size: 13.5px; line-height: 1.55; color: var(--mm-ink-2); margin: 0; }
+  #mmRail .mm-body.lg { font-size: 14.5px; line-height: 1.6; }
+
+  #mlip-map .mm-note, #mmRail .mm-note {
+    border-radius: .75rem; padding: 9px 12px; font-size: 11.5px; line-height: 1.5;
+    border: 1px solid;
+  }
+  #mlip-map .mm-note.mark, #mmRail .mm-note.mark {
+    color: var(--mm-mark); border-color: var(--mm-mark);
+    font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 10.5px;
+  }
+  #mlip-map .mm-note.warn, #mmRail .mm-note.warn { color: var(--mm-warn); border-color: var(--mm-warn); border-style: dashed; }
+
+  /* ---------------------------------------------------------------- roadmap */
+  #mlip-map .mm-brief {
+    border: 1px solid var(--mm-rule); border-left: 3px solid var(--mm-accent);
+    border-radius: 1rem; background: var(--mm-surface); padding: 20px 24px;
+    columns: 2; column-gap: 34px; column-rule: 1px solid var(--mm-rule);
+  }
+  #mlip-map .mm-brief p {
+    font-size: 14px; line-height: 1.6; color: var(--mm-ink-2);
+    break-inside: avoid; margin: 0 0 13px;
+  }
+  #mlip-map .mm-brief b { color: var(--mm-ink); font-weight: 700; }
+  @media (max-width: 820px) { #mlip-map .mm-brief { columns: 1; } }
+
+  #mlip-map .mm-rm-hd { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  #mlip-map .mm-card.rm { padding: 18px 20px; }
+  #mlip-map .mm-maturity {
+    font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 9999px; border: 1px solid;
+  }
+  #mlip-map .mm-maturity[data-m="nascent"]     { color: var(--mm-mark); border-color: var(--mm-mark); }
+  #mlip-map .mm-maturity[data-m="underserved"] { color: var(--mm-harmonics); border-color: var(--mm-harmonics); }
+  #mlip-map .mm-maturity[data-m="active"]      { color: var(--mm-warn); border-color: var(--mm-warn); }
+  #mlip-map .mm-maturity[data-m="crowded"]     { color: var(--mm-ink-3); border-color: var(--mm-rule-2); background: var(--mm-surface-2); }
+  #mlip-map .mm-whyhard {
+    border-left: 2px solid var(--mm-rule-2); padding-left: 12px; margin: 11px 0 0;
+    font-size: 13px; color: var(--mm-ink-2); font-style: italic; line-height: 1.55;
+  }
+  #mlip-map .mm-papers { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; }
+  #mlip-map .mm-paper { font-size: 12px; color: var(--mm-ink-2); display: flex; gap: 8px; }
+  #mlip-map .mm-paper a { color: var(--mm-ink-2); text-decoration: none; }
+  #mlip-map .mm-paper a:hover { color: var(--mm-accent); text-decoration: underline; }
+  #mlip-map .mm-paper .py { color: var(--mm-ink-3); font-variant-numeric: tabular-nums; flex: none; }
+
+  #mlip-map .mm-empty {
+    padding: 44px 20px; text-align: center; font-size: 13px; color: var(--mm-ink-3);
+    border: 1px dashed var(--mm-rule-2); border-radius: 1rem;
+  }
+  #mlip-map .mm-empty code {
+    background: var(--mm-surface-2); padding: 2px 5px; border-radius: 4px; font-size: 12px;
+  }
+
+  #mlip-map :focus-visible, #mmRail :focus-visible { outline: 2px solid var(--mm-accent); outline-offset: 2px; }
+  </style>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100" data-page="materials">
   <header id="site-nav" class="fixed top-0 inset-x-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/90 transition-shadow">
@@ -165,6 +627,122 @@
       </article>
     </section>
 
+    <!-- ================= MLIP FAMILY TREE ================= -->
+    <section id="mlip-map" class="mm-loading">
+      <div class="space-y-3">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400" data-i18n="mlip.kicker">Interactive demo</p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white" data-i18n="mlip.title">The (ML) force field family tree</h2>
+        <p class="text-base text-slate-700 dark:text-slate-200 max-w-4xl" data-i18n="mlip.lead">A time map of how atoms became numbers — every representation trunk from Lifson’s 1968 consistent force field to the universal foundation models of 2026, the benchmarks that rank them, the groups that build them, and the problems still open.</p>
+      </div>
+
+      <div class="mm-stats mt-6" id="mmStats"></div>
+      <div id="mmFallback"></div>
+
+      <div class="mm-tabs mt-6" role="tablist" aria-label="Map views">
+        <button type="button" class="mm-tab" role="tab" aria-selected="true"  data-view="tree">Family tree<span class="mm-tab-n" id="mmCTree"></span></button>
+        <button type="button" class="mm-tab" role="tab" aria-selected="false" data-view="bench">Benchmarks<span class="mm-tab-n" id="mmCBench"></span></button>
+        <button type="button" class="mm-tab" role="tab" aria-selected="false" data-view="groups">Groups<span class="mm-tab-n" id="mmCGroups"></span></button>
+        <button type="button" class="mm-tab" role="tab" aria-selected="false" data-view="roadmap">Roadmap<span class="mm-tab-n" id="mmCRoad"></span></button>
+        <button type="button" class="mm-tab" role="tab" aria-selected="false" data-view="resources">Resources<span class="mm-tab-n" id="mmCRes"></span></button>
+      </div>
+
+      <!-- ---------- FAMILY TREE ---------- -->
+      <div class="mm-view active" id="mmView-tree" role="tabpanel">
+        <h3>Models — how atoms became numbers</h3>
+        <p class="mm-lead">
+          Lanes are <strong>representations</strong>, not architectures: what a method feeds the
+          regressor determines what it can and can’t learn, and that choice is what actually forks
+          the tree. The horizontal axis is compressed before 2015 and stretched after — that skew is
+          the story. Foundation models carry a <strong style="color:var(--mm-mark)">red ring</strong>.
+        </p>
+        <div class="mm-controls" id="mmTreeControls"></div>
+        <div class="mm-chart">
+          <div class="mm-scroll" id="mmTreeScroll"><div class="mm-canvas" id="mmTreeCanvas"></div></div>
+          <div class="mm-legend">
+            <span class="mm-lg"><span class="mm-demo"></span> atom-centred</span>
+            <span class="mm-lg"><span class="mm-demo sq"></span> message passing</span>
+            <span class="mm-lg"><span class="mm-demo di"></span> attention / transformer</span>
+            <span class="mm-lg"><span class="mm-ring"></span> universal / foundation model</span>
+            <span class="mm-lg" style="margin-left:auto">hover → lineage · click → detail</span>
+          </div>
+        </div>
+        <div class="mm-hint"><span>↔ scroll horizontally</span><span id="mmTreeShown"></span></div>
+
+        <h3>All models</h3>
+        <p class="mm-lead">The same set, as reference cards. Filters above apply here too.</p>
+        <div class="mm-grid two" id="mmModelGrid" style="margin-top:14px"></div>
+      </div>
+
+      <!-- ---------- BENCHMARKS ---------- -->
+      <div class="mm-view" id="mmView-bench" role="tabpanel">
+        <h3>Benchmarks — and who currently holds them</h3>
+        <p class="mm-lead">
+          A model is only as meaningful as the set it was measured on. Lanes here are
+          <strong>domains</strong>; each dataset carries its level of theory, its size, and the models
+          that top it. Numbers are as published — read them as pointers to leaderboards, not as a
+          settled ranking.
+        </p>
+        <div class="mm-controls" id="mmBenchControls"></div>
+        <div class="mm-chart">
+          <div class="mm-scroll" id="mmBenchScroll"><div class="mm-canvas" id="mmBenchCanvas"></div></div>
+          <div class="mm-legend">
+            <span class="mm-lg"><span class="mm-demo"></span> dataset</span>
+            <span class="mm-lg"><span class="mm-demo sq"></span> benchmark with leaderboard</span>
+            <span class="mm-lg" style="margin-left:auto">click → SOTA table</span>
+          </div>
+        </div>
+        <div class="mm-hint"><span>↔ scroll horizontally</span><span id="mmBenchShown"></span></div>
+
+        <h3>All benchmarks &amp; datasets</h3>
+        <div class="mm-grid two" id="mmBenchGrid" style="margin-top:14px"></div>
+      </div>
+
+      <!-- ---------- GROUPS ---------- -->
+      <div class="mm-view" id="mmView-groups" role="tabpanel">
+        <h3>Groups, labs, and industry teams</h3>
+        <p class="mm-lead">
+          Academic groups and industry labs actively shipping methods, with the models they’re known
+          for — a target list for collaborations, internships, and conference corridors.
+        </p>
+        <div class="mm-controls" id="mmGroupControls"></div>
+        <div class="mm-grid three" id="mmGroupGrid"></div>
+      </div>
+
+      <!-- ---------- ROADMAP ---------- -->
+      <div class="mm-view" id="mmView-roadmap" role="tabpanel">
+        <h3>State of the field, mid-2026</h3>
+        <div class="mm-brief" id="mmBrief" style="margin-top:12px"></div>
+
+        <h3>Open problems, ranked by how crowded they are</h3>
+        <p class="mm-lead">
+          Fourteen directions with real headroom, each with the papers that define it and the groups
+          working on it. <strong>Underserved</strong> and <strong>nascent</strong> are where a thesis
+          can still claim territory; <strong>crowded</strong> means racing well-funded teams on their turf.
+        </p>
+        <div class="mm-controls" id="mmRoadControls"></div>
+        <div class="mm-grid one" id="mmRoadGrid"></div>
+
+        <h3>The stack you’ll actually type into</h3>
+        <div class="mm-grid three" id="mmStackGrid" style="margin-top:14px"></div>
+      </div>
+
+      <!-- ---------- RESOURCES ---------- -->
+      <div class="mm-view" id="mmView-resources" role="tabpanel">
+        <h3>Venues, journals, schools, and reviews</h3>
+        <p class="mm-lead">Where this work gets published and argued about, plus the review papers worth reading first.</p>
+        <div class="mm-controls" id="mmResControls"></div>
+        <div class="mm-grid two" id="mmResGrid"></div>
+      </div>
+
+      <p class="mm-hint" style="margin-top:26px;line-height:1.7;display:block;max-width:80ch">
+        Compiled 2026-07-17 by an agent research fleet; all 710 outbound links were resolved over HTTP
+        and returned live. Entries that could not be fully confirmed are marked
+        <span class="mm-tag unver">unverified</span>. The field moves weekly and leaderboards turn over —
+        treat every number as a pointer to a leaderboard, not a citation. Lineage taxonomy and trunk
+        colours after the “(ML) force field representation family tree” figure.
+      </p>
+    </section>
+
     <section id="contact" class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -176,5 +754,20 @@
       </div>
     </section>
   </main>
+
+  <!-- detail drawer -->
+  <div id="mmScrim"></div>
+  <aside id="mmRail" aria-hidden="true" aria-label="Detail">
+    <div id="mmRailStrip"></div>
+    <div id="mmRailTop">
+      <div style="flex:1;min-width:0">
+        <div id="mmRailKicker"></div>
+        <h3 id="mmRailTitle"></h3>
+        <div id="mmRailSub"></div>
+      </div>
+      <button type="button" id="mmRailClose" aria-label="Close">✕</button>
+    </div>
+    <div id="mmRailBody"></div>
+  </aside>
 </body>
 </html>
