@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atomic Interaction Lab | Aidar Alimbayev</title>
+  <meta name="description" content="A live 2D molecular-dynamics simulation in the browser: Lennard-Jones forces, the force field a probe atom feels, and how temperature drives the motion of atoms and molecules. Ten presets from crystal to vapour, with g(r), energy, speed distribution and diffusion measured on the fly.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { colors: { primary: { 50: '#f0f4ff', 900: '#0f172a' } } } }
+    }
+  </script>
+  <script>
+    window.pageTranslations = {
+      en: {
+        'page.title': 'Atomic Interaction Lab',
+        'page.lead': 'A molecular-dynamics simulation that runs in this page. Atoms interact through a real Lennard-Jones potential, the force field they generate is drawn as you watch, and temperature is a dial you turn.',
+        'page.cta': 'Back to Materials Science Research',
+        /* --- The lab itself is English-only on purpose: js/site.js falls back to
+               the `en` string for any key a language is missing, so all five
+               languages keep working. Add 'kk'/'ru'/'ar'/'es' entries below if
+               you want the simulator UI translated in your own words. --- */
+        'lab.kicker': 'Interactive demo'
+      },
+      kk: {
+        'page.title': 'Атомдық әрекеттесу зертханасы',
+        'page.lead': 'Осы беттің ішінде жұмыс істейтін молекулалық динамика симуляциясы. Атомдар нақты Леннард-Джонс потенциалы арқылы әрекеттеседі, олар тудыратын күш өрісі сіздің көз алдыңызда сызылады, ал температура — сіз бұрайтын тетік.',
+        'page.cta': 'Материалдар ғылымы бетіне'
+      },
+      ru: {
+        'page.title': 'Лаборатория атомных взаимодействий',
+        'page.lead': 'Молекулярно-динамическая симуляция, работающая прямо на этой странице. Атомы взаимодействуют через настоящий потенциал Леннард-Джонса, создаваемое ими силовое поле рисуется в реальном времени, а температура — это ручка, которую вы поворачиваете.',
+        'page.cta': 'К странице исследований по материаловедению'
+      },
+      ar: {
+        'page.title': 'مختبر التفاعلات الذرية',
+        'page.lead': 'محاكاة ديناميكا جزيئية تعمل داخل هذه الصفحة. تتفاعل الذرات عبر جهد لينارد-جونز الحقيقي، ويُرسم مجال القوى الناتج أمامك مباشرة، ودرجة الحرارة مقبض تديره بنفسك.',
+        'page.cta': 'العودة إلى صفحة أبحاث علوم المواد'
+      },
+      es: {
+        'page.title': 'Laboratorio de interacciones atómicas',
+        'page.lead': 'Una simulación de dinámica molecular que corre dentro de esta página. Los átomos interactúan mediante un potencial de Lennard-Jones real, el campo de fuerzas que generan se dibuja mientras miras, y la temperatura es una perilla que giras.',
+        'page.cta': 'Volver a Investigación en ciencia de materiales'
+      }
+    };
+  </script>
+  <script src="js/site.js" defer></script>
+  <script src="js/md-engine.js" defer></script>
+  <script src="js/md-lab.js" defer></script>
+
+  <style>
+  /* ======================================================================
+     Atomic interaction lab. Everything is scoped to #md-lab so nothing leaks
+     into the rest of the site; only the --md-* custom properties sit at :root
+     level inside the section, because js/md-lab.js reads them with
+     getComputedStyle to paint the canvas — the theme toggle therefore drives
+     the simulation colours as well as the CSS.
+
+     Three colour jobs, three ramps:
+       · categorical  s1/s2/s3   — chart series identity. Validated for CVD
+                                   separation and contrast against the card
+                                   surfaces in both modes.
+       · sequential   seq0→seq1  — magnitude (force, speed, kinetic energy).
+                                   One hue, light→dark; inverted for dark mode.
+       · diverging    neg/mid/pos — polarity (attraction vs repulsion, charge).
+                                   Two opposite hues, neutral grey midpoint.
+                                   wash0/1/2 is the same ramp, softened, for
+                                   the background energy field, which has to
+                                   stay recessive under the atoms.
+     ====================================================================== */
+  #md-lab {
+    position: relative;
+    direction: ltr;                     /* the box is not a paragraph; ar/rtl must not flip it */
+    font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+
+    --md-surface:   #ffffff;
+    --md-surface2:  #f1f5f9;
+    --md-stage:     #ffffff;
+    --md-ink:       #0f172a;
+    --md-ink2:      #475569;
+    --md-ink3:      #64748b;
+    --md-rule:      #e2e8f0;
+    --md-rule2:     #cbd5e1;
+    --md-grid:      #eef2f7;
+    --md-accent:    #4f46e5;
+
+    --md-s1:        #4f46e5;
+    --md-s2:        #c2410c;
+    --md-s3:        #0d9488;
+
+    --md-neg:       #0369a1;
+    --md-mid:       #e2e8f0;
+    --md-pos:       #be123c;
+
+    --md-wash0:     #bae6fd;
+    --md-wash1:     #f1f5f9;
+    --md-wash2:     #fecdd3;
+
+    --md-seq0:      #dbeafe;
+    --md-seq1:      #1e3a8a;
+  }
+  .dark #md-lab {
+    --md-surface:   #0f172a;
+    --md-surface2:  #1e293b;
+    --md-stage:     #0b1220;
+    --md-ink:       #f1f5f9;
+    --md-ink2:      #cbd5e1;
+    --md-ink3:      #94a3b8;
+    --md-rule:      #1e293b;
+    --md-rule2:     #334155;
+    --md-grid:      #1b2536;
+    --md-accent:    #818cf8;
+
+    --md-s1:        #6366f1;
+    --md-s2:        #ea580c;
+    --md-s3:        #0d9488;
+
+    --md-neg:       #38bdf8;
+    --md-mid:       #334155;
+    --md-pos:       #fb7185;
+
+    --md-wash0:     #12455e;
+    --md-wash1:     #1a2436;
+    --md-wash2:     #532029;
+
+    --md-seq0:      #172554;
+    --md-seq1:      #bfdbfe;
+  }
+
+  #md-lab.md-loading .md-body { display: none; }
+  #md-lab.md-loading::after {
+    content: 'Starting the simulation…';
+    display: block; padding: 64px 0; text-align: center;
+    color: var(--md-ink3); font-size: 14px;
+  }
+
+  #md-lab .num, #md-lab .md-table td, #md-lab .md-table th { font-variant-numeric: tabular-nums; }
+
+  /* ------------------------------------------------------------- toolbar */
+  #md-lab .md-toolbar {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    padding: 12px; margin-top: 22px;
+    background: var(--md-surface); border: 1px solid var(--md-rule);
+    border-radius: 14px;
+  }
+  #md-lab .md-toolbar .md-grow { flex: 1 1 240px; min-width: 200px; }
+  #md-lab label.md-lab, #md-lab .md-lab {
+    display: block; font-size: 11px; font-weight: 600; letter-spacing: .04em;
+    text-transform: uppercase; color: var(--md-ink3); margin-bottom: 4px;
+  }
+  #md-lab select, #md-lab input[type="range"] {
+    width: 100%; font-family: inherit;
+  }
+  #md-lab select {
+    font-size: 13px; padding: 7px 10px; border-radius: 9px;
+    border: 1px solid var(--md-rule2); background: var(--md-surface);
+    color: var(--md-ink);
+  }
+  #md-lab input[type="range"] { accent-color: var(--md-accent); height: 22px; }
+  #md-lab button {
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    padding: 8px 14px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--md-rule2); background: var(--md-surface);
+    color: var(--md-ink); transition: border-color .15s, transform .15s;
+  }
+  #md-lab button:hover { border-color: var(--md-ink3); transform: translateY(-1px); }
+  #md-lab button.md-primary { background: var(--md-ink); color: var(--md-surface); border-color: var(--md-ink); }
+  #md-lab .md-blurb {
+    flex: 1 1 100%; font-size: 13px; line-height: 1.6; color: var(--md-ink2); margin: 2px 0 0;
+  }
+  #md-lab .md-note {
+    flex: 1 1 100%; font-size: 12px; line-height: 1.6; margin: 0;
+    color: var(--md-ink2); background: var(--md-surface2);
+    border-radius: 9px; padding: 8px 11px;
+  }
+
+  /* ---------------------------------------------------------------- body */
+  #md-lab .md-main { display: grid; gap: 16px; margin-top: 16px; }
+  @media (min-width: 1024px) { #md-lab .md-main { grid-template-columns: minmax(0,1fr) 300px; } }
+
+  #md-lab .md-layers { border-top: 1px solid var(--md-rule); margin-top: 10px; padding-top: 12px; }
+  #md-lab .md-lrow { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-bottom: 10px; }
+  #md-lab .md-lrow:last-child { margin-bottom: 0; }
+  #md-lab .md-lrow.md-lwrap { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+  @media (max-width: 560px) { #md-lab .md-lrow { grid-template-columns: 1fr; } }
+
+  #md-lab .md-stagewrap {
+    position: relative; align-self: start;
+    background: var(--md-surface); border: 1px solid var(--md-rule);
+    border-radius: 14px; padding: 12px;
+  }
+  #md-lab .md-stagebox { position: relative; display: flex; justify-content: center; }
+  #md-lab canvas#mdCanvas {
+    display: block; border-radius: 10px;
+    background: var(--md-stage); touch-action: none; cursor: grab;
+  }
+  #md-lab canvas#mdCanvas:active { cursor: grabbing; }
+  #md-lab canvas#mdCanvas[data-tool="heat"],
+  #md-lab canvas#mdCanvas[data-tool="cool"] { cursor: cell; }
+  #md-lab canvas#mdCanvas:focus-visible { outline: 2px solid var(--md-accent); outline-offset: 2px; }
+
+  #md-lab .md-tip, #md-lab .md-charttip {
+    position: absolute; z-index: 6; pointer-events: none;
+    min-width: 168px; max-width: 260px;
+    background: var(--md-surface); color: var(--md-ink);
+    border: 1px solid var(--md-rule2); border-radius: 10px;
+    padding: 8px 10px; font-size: 11.5px; line-height: 1.55;
+    box-shadow: 0 10px 24px rgba(15,23,42,.14);
+  }
+  #md-lab .md-tip b, #md-lab .md-charttip b { display: block; font-size: 12px; margin-bottom: 4px; }
+  #md-lab .md-tip span, #md-lab .md-charttip span { display: flex; gap: 8px; justify-content: space-between; }
+  #md-lab .md-tip i { font-style: normal; color: var(--md-ink3); }
+  #md-lab .md-charttip i { width: 8px; height: 8px; border-radius: 2px; flex: none; align-self: center; }
+  #md-lab .md-charttip span { align-items: center; }
+  #md-lab .md-charttip em { font-style: normal; margin-left: auto; font-variant-numeric: tabular-nums; }
+
+  #md-lab .md-scale { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; }
+  #md-lab .md-lg { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--md-ink2); }
+  #md-lab .md-lgl { font-weight: 600; }
+  #md-lab .md-lge { color: var(--md-ink3); }
+  #md-lab .md-ramp { display: inline-flex; border-radius: 3px; overflow: hidden; }
+  #md-lab .md-ramp i { width: 9px; height: 10px; display: block; }
+  #md-lab .md-key { display: inline-flex; align-items: center; gap: 5px; margin-right: 10px; }
+  #md-lab .md-key i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+  /* --------------------------------------------------------------- panel */
+  #md-lab .md-panel {
+    background: var(--md-surface); border: 1px solid var(--md-rule);
+    border-radius: 14px; padding: 14px; align-self: start;
+  }
+  #md-lab .md-panel h3 {
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--md-ink3); margin: 18px 0 9px;
+  }
+  #md-lab .md-panel h3:first-child { margin-top: 0; }
+  #md-lab .md-row { margin-bottom: 12px; }
+  #md-lab .md-val { font-size: 11px; color: var(--md-ink3); font-variant-numeric: tabular-nums; }
+  #md-lab .md-checks { display: grid; gap: 7px; }
+  #md-lab .md-check, #md-lab .md-radio {
+    display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--md-ink2);
+    cursor: pointer;
+  }
+  #md-lab .md-check input, #md-lab .md-radio input { accent-color: var(--md-accent); }
+  #md-lab .md-tools { display: flex; gap: 14px; flex-wrap: wrap; }
+  #md-lab .md-hint { font-size: 11.5px; line-height: 1.6; color: var(--md-ink3); margin: 8px 0 0; }
+
+  /* --------------------------------------------------------------- tiles */
+  #md-lab .md-stats {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 16px;
+    background: var(--md-rule); border: 1px solid var(--md-rule);
+    border-radius: 14px; overflow: hidden;
+  }
+  @media (min-width: 700px) { #md-lab .md-stats { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1100px) { #md-lab .md-stats { grid-template-columns: repeat(6, 1fr); } }
+  #md-lab .md-tile { background: var(--md-surface); padding: 12px 13px; }
+  #md-lab .md-tile-k {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+    color: var(--md-ink3);
+  }
+  #md-lab .md-tile-v { font-size: 21px; font-weight: 600; color: var(--md-ink); margin-top: 3px; line-height: 1.15; }
+  #md-lab .md-tile-s { font-size: 10.5px; color: var(--md-ink3); margin-top: 3px; line-height: 1.4; }
+  #md-lab .md-chip {
+    display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 9px;
+    border-radius: 999px; background: var(--md-surface2); color: var(--md-ink2); margin-top: 4px;
+  }
+
+  /* -------------------------------------------------------------- charts */
+  #md-lab .md-charts { display: grid; gap: 14px; margin-top: 16px; }
+  @media (min-width: 760px) { #md-lab .md-charts { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  #md-lab .md-card {
+    background: var(--md-surface); border: 1px solid var(--md-rule);
+    border-radius: 14px; padding: 13px 14px 10px;
+  }
+  #md-lab .md-card h4 { font-size: 13.5px; font-weight: 600; color: var(--md-ink); margin: 0; }
+  #md-lab .md-card p { font-size: 11.5px; line-height: 1.6; color: var(--md-ink3); margin: 3px 0 8px; }
+  #md-lab .md-card canvas { display: block; width: 100%; height: 168px; }
+  #md-lab .md-card.md-tall canvas { height: 290px; }
+  #md-lab .md-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px; }
+  #md-lab .md-legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--md-ink2); }
+  #md-lab .md-legend i { width: 12px; height: 3px; border-radius: 2px; display: inline-block; }
+  #md-lab .md-legend i.md-bar { height: 9px; width: 9px; border-radius: 2px; }
+
+  /* -------------------------------------------------------------- tables */
+  #md-lab .md-tablebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 16px; }
+  #md-lab .md-tablewrap { margin-top: 12px; display: grid; gap: 16px; }
+  @media (min-width: 900px) { #md-lab .md-tablewrap { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  /* the scroll lives on a wrapper, so the table keeps normal table layout */
+  #md-lab .md-tscroll {
+    max-height: 420px; overflow: auto;
+    background: var(--md-surface); border: 1px solid var(--md-rule); border-radius: 12px;
+  }
+  #md-lab .md-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  #md-lab .md-table caption {
+    text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--md-ink3); padding: 10px 12px 6px;
+    position: sticky; top: 0; background: var(--md-surface);
+  }
+  #md-lab .md-table th, #md-lab .md-table td {
+    padding: 6px 12px; border-top: 1px solid var(--md-rule); text-align: left;
+    color: var(--md-ink2); font-weight: 400; white-space: nowrap;
+  }
+  #md-lab .md-table thead th { color: var(--md-ink3); font-weight: 600; font-size: 11px; }
+  #md-lab .md-table tbody th { color: var(--md-ink); font-weight: 500; white-space: normal; }
+  #md-lab .md-table .num { text-align: right; }
+
+  #md-lab :focus-visible { outline: 2px solid var(--md-accent); outline-offset: 2px; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100" data-page="md-lab">
+  <header id="site-nav" class="fixed top-0 inset-x-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/90 transition-shadow">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-4">
+        <a href="index.html#about" class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="nav.brand">Aidar Alimbayev</a>
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-700 dark:text-slate-200">
+          <a href="index.html#about" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.about">About</a>
+          <a href="materials.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.materials">Materials Science Research</a>
+          <a href="index.html#research" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.research">Previous Research</a>
+          <a href="social.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.social">Social Media</a>
+          <a href="#contact" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.contact">Contact</a>
+          <a href="cv.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-white shadow hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="nav.cv">View CV</a>
+        </nav>
+        <div class="flex items-center gap-2">
+          <select aria-label="Language" data-role="language-select" class="hidden sm:block rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-slate-700">
+            <option value="en">English</option>
+            <option value="kk">Kazakh</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="es">Español</option>
+          </select>
+          <button type="button" aria-label="Toggle dark mode" data-role="theme-toggle" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:text-white dark:focus:ring-slate-700">
+            <span aria-hidden="true" class="sun-icon hidden">☀️</span>
+            <span aria-hidden="true" class="moon-icon">🌙</span>
+          </button>
+          <button aria-label="Open navigation" data-role="mobile-toggle" class="md:hidden inline-flex items-center justify-center rounded-full border border-slate-200 p-2 text-slate-700 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:border-slate-700 dark:text-slate-100 dark:hover:text-white dark:focus:ring-offset-slate-900">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div data-role="mobile-menu" class="md:hidden hidden border-t border-slate-100 bg-white/95 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
+      <div class="max-w-6xl mx-auto px-4 py-4 space-y-3 text-sm font-medium text-slate-700 dark:text-slate-200">
+        <a href="index.html#about" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.about">About</a>
+        <a href="materials.html" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.materials">Materials Science Research</a>
+        <a href="index.html#research" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.research">Previous Research</a>
+        <a href="social.html" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.social">Social Media</a>
+        <a href="#contact" class="block hover:text-slate-900 dark:hover:text-white" data-i18n="nav.contact">Contact</a>
+        <a href="cv.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-white shadow hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="nav.cv">View CV</a>
+        <div class="flex items-center gap-3 pt-3">
+          <label class="text-xs font-semibold text-slate-500 dark:text-slate-400" for="mobile-language">Language</label>
+          <select id="mobile-language" data-role="language-select" class="flex-1 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:ring-slate-700">
+            <option value="en">English</option>
+            <option value="kk">Kazakh</option>
+            <option value="ru">Русский</option>
+            <option value="ar">العربية</option>
+            <option value="es">Español</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 space-y-16">
+    <section class="space-y-3">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400" data-i18n="lab.kicker">Interactive demo</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white" data-i18n="page.title">Atomic Interaction Lab</h1>
+      <p class="text-lg text-slate-700 dark:text-slate-200 max-w-4xl" data-i18n="page.lead">A molecular-dynamics simulation that runs in this page. Atoms interact through a real Lennard-Jones potential, the force field they generate is drawn as you watch, and temperature is a dial you turn.</p>
+    </section>
+
+    <section class="grid gap-6 md:grid-cols-3">
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <h2 class="text-lg font-semibold text-slate-900 dark:text-white">The interaction</h2>
+        <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Every pair of atoms feels one curve: hard repulsion when their electron clouds overlap, a shallow attractive well beyond it. That single shape, summed over neighbours, is enough to produce solids, liquids, gases, and the transitions between them.</p>
+      </article>
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <h2 class="text-lg font-semibold text-slate-900 dark:text-white">The force field</h2>
+        <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">The background wash and the arrows are not decoration. At every grid point the simulation drops in a test atom and measures what it would feel — the potential <em>U</em> and the force −∇<em>U</em>. That vector field is exactly what a machine-learned interatomic potential is trained to reproduce.</p>
+      </article>
+      <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <h2 class="text-lg font-semibold text-slate-900 dark:text-white">The temperature</h2>
+        <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Temperature here is not a slider on an animation speed — it is the width of the velocity distribution, maintained by a Langevin thermostat. Raise it and the lattice melts; the speed histogram tracks the Maxwell–Boltzmann curve while it happens.</p>
+      </article>
+    </section>
+
+    <!-- ======================= THE LAB ======================= -->
+    <section id="md-lab" class="md-loading" aria-label="Molecular dynamics simulation">
+      <div class="space-y-3">
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Run it</h2>
+        <p class="text-base text-slate-700 dark:text-slate-200 max-w-4xl">
+          Pick a starting state, then push it around. Drag an atom and feel the neighbours resist;
+          switch the pointer to the heat brush and melt a hole in a crystal. Everything on this page
+          is measured from the same trajectory, live — nothing is pre-recorded.
+        </p>
+      </div>
+
+      <div class="md-body">
+        <!-- one control row above everything it scopes -->
+        <div class="md-toolbar" role="group" aria-label="Simulation controls">
+          <div class="md-grow">
+            <label class="md-lab" for="mdPreset">Starting state</label>
+            <select id="mdPreset"></select>
+          </div>
+          <div style="flex:0 0 auto">
+            <span class="md-lab">Run</span>
+            <div style="display:flex;gap:8px">
+              <button type="button" id="mdPlay" class="md-primary" aria-pressed="true">▶ Run</button>
+              <button type="button" id="mdStep">Step</button>
+              <button type="button" id="mdReset">Reset</button>
+            </div>
+          </div>
+          <div style="flex:0 0 150px">
+            <label class="md-lab" for="mdRate">Steps per frame</label>
+            <select id="mdRate">
+              <option value="1">1 — slow motion</option>
+              <option value="2">2</option>
+              <option value="4" selected>4 — normal</option>
+              <option value="8">8</option>
+              <option value="16">16 — fast</option>
+            </select>
+          </div>
+          <div style="flex:0 0 auto">
+            <span class="md-lab">Temperature script</span>
+            <button type="button" id="mdRamp">Ramp T over 90 τ</button>
+          </div>
+          <p class="md-blurb" id="mdPresetBlurb"></p>
+          <p class="md-note" id="mdRampNote" hidden>A temperature ramp is running — the target <em>T*</em> is being driven automatically. Move the temperature slider to take back control.</p>
+          <p class="md-note" id="mdMotionNote" hidden>Your system asks for reduced motion, so the simulation starts paused. Press <strong>Run</strong> when you want it moving.</p>
+          <p class="md-note" id="mdBlowup" hidden>The integrator went unstable and the system was rebuilt. That happens when the timestep is too long for the forces in play — shorten <strong>Δt</strong>, or switch the thermostat back on.</p>
+        </div>
+
+        <div class="md-main">
+          <!-- ---------------------------------------------------- viewport -->
+          <div class="md-stagewrap">
+            <div class="md-stagebox">
+              <canvas id="mdCanvas" tabindex="0" data-tool="drag"
+                      aria-label="Simulation box. Drag an atom to pull it; use the pointer tool selector to heat or cool a region. Space runs and pauses, arrow up and down change temperature, S steps, R rebuilds."></canvas>
+              <div class="md-tip" id="mdTip" hidden></div>
+            </div>
+            <div class="md-scale" id="mdScale"></div>
+            <p class="md-hint">
+              Hover an atom for its speed, energy and net force; click to pin it, double-click to release.
+              Keyboard: <strong>space</strong> run/pause · <strong>↑ ↓</strong> temperature ·
+              <strong>S</strong> single step · <strong>R</strong> rebuild.
+            </p>
+
+            <!-- view controls sit with the view they change, not in the physics panel -->
+            <div class="md-layers">
+              <div class="md-lrow">
+                <div>
+                  <label class="md-lab" for="mdWash">Background field</label>
+                  <select id="mdWash">
+                    <option value="none">Nothing</option>
+                    <option value="energy">Potential energy of a probe atom</option>
+                    <option value="force">Force magnitude</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="md-lab" for="mdField">Force field</label>
+                  <select id="mdField">
+                    <option value="none">Nothing</option>
+                    <option value="arrows">Arrows on a grid</option>
+                    <option value="lines">Field lines</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="md-lab" for="mdColor">Colour atoms by</label>
+                  <select id="mdColor">
+                    <option value="species">Species</option>
+                    <option value="speed">Speed</option>
+                    <option value="ke">Kinetic energy</option>
+                    <option value="force">Net force</option>
+                    <option value="pe">Potential energy</option>
+                  </select>
+                </div>
+              </div>
+              <div class="md-lrow md-lwrap">
+                <label class="md-check"><input type="checkbox" id="mdLinks"> Pair interactions</label>
+                <label class="md-check"><input type="checkbox" id="mdForces"> Force on each atom</label>
+                <label class="md-check"><input type="checkbox" id="mdVel"> Velocity of each atom</label>
+                <label class="md-check"><input type="checkbox" id="mdTrails"> Trails</label>
+                <label class="md-check"><input type="checkbox" id="mdGhosts"> Periodic images</label>
+              </div>
+              <div class="md-lrow md-lwrap">
+                <span class="md-lab" style="margin:0 4px 0 0">Pointer</span>
+                <label class="md-radio"><input type="radio" name="mdTool" value="drag" checked> Drag an atom</label>
+                <label class="md-radio"><input type="radio" name="mdTool" value="heat"> Heat a region</label>
+                <label class="md-radio"><input type="radio" name="mdTool" value="cool"> Cool a region</label>
+                <span class="md-hint" style="margin:0">Heat and cool scale velocities inside a small disc; the thermostat pulls the region back afterwards.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------------------------------------------- panel -->
+          <div class="md-panel">
+            <h3>Thermodynamics</h3>
+            <div class="md-row">
+              <label class="md-lab" for="mdT">Target temperature <em>T*</em></label>
+              <input type="range" id="mdT" min="0.02" max="4" step="0.01">
+              <span class="md-val" id="mdTval"></span>
+            </div>
+            <div class="md-row">
+              <label class="md-lab" for="mdThermo">Thermostat</label>
+              <select id="mdThermo">
+                <option value="langevin">Langevin (samples the canonical ensemble)</option>
+                <option value="berendsen">Berendsen (fast, not canonical)</option>
+                <option value="nve">None — constant energy</option>
+              </select>
+            </div>
+            <div class="md-row" id="mdGammaRow">
+              <label class="md-lab" for="mdGamma">Friction γ</label>
+              <input type="range" id="mdGamma" min="0" max="4" step="0.05">
+              <span class="md-val" id="mdGammaval"></span>
+            </div>
+            <div class="md-row">
+              <label class="md-lab" for="mdBoundary">Boundary</label>
+              <select id="mdBoundary">
+                <option value="pbc">Periodic — a slice of bulk matter</option>
+                <option value="wall">Reflecting walls — atoms in a container</option>
+              </select>
+            </div>
+
+            <h3>System</h3>
+            <div class="md-row">
+              <label class="md-lab" for="mdRho">Number density ρ*</label>
+              <input type="range" id="mdRho" min="0.05" max="1.05" step="0.01">
+              <span class="md-val" id="mdRhoval"></span>
+            </div>
+            <div class="md-row">
+              <label class="md-lab" for="mdN">Atoms</label>
+              <input type="range" id="mdN" min="60" max="1400" step="20">
+              <span class="md-val" id="mdNval"></span>
+            </div>
+            <div class="md-row">
+              <label class="md-lab" for="mdDt">Timestep Δt</label>
+              <input type="range" id="mdDt" min="0.001" max="0.009" step="0.0005">
+              <span class="md-val" id="mdDtval"></span>
+            </div>
+            <div class="md-row">
+              <label class="md-lab" for="mdCross">Unlike-pair attraction ε<sub>AB</sub></label>
+              <input type="range" id="mdCross" min="0.1" max="1.5" step="0.05">
+              <span class="md-val" id="mdCrossval"></span>
+            </div>
+            <div class="md-row">
+              <label class="md-lab" for="mdCoulomb">Electrostatic strength</label>
+              <input type="range" id="mdCoulomb" min="0" max="30" step="1">
+              <span class="md-val" id="mdCoulval"></span>
+            </div>
+            <p class="md-hint">Density, atom count and boundary rebuild the box; everything else takes effect on the running system.</p>
+          </div>
+        </div>
+
+        <!-- ------------------------------------------------------- read-outs -->
+        <div class="md-stats">
+          <div class="md-tile">
+            <div class="md-tile-k">Temperature</div>
+            <div class="md-tile-v" id="mdStatT">—</div>
+            <div class="md-tile-s" id="mdStatTSub"></div>
+          </div>
+          <div class="md-tile">
+            <div class="md-tile-k">Pressure</div>
+            <div class="md-tile-v" id="mdStatP">—</div>
+            <div class="md-tile-s" id="mdStatPSub"></div>
+          </div>
+          <div class="md-tile">
+            <div class="md-tile-k">Energy / atom</div>
+            <div class="md-tile-v" id="mdStatE">—</div>
+            <div class="md-tile-s" id="mdStatESub"></div>
+          </div>
+          <div class="md-tile">
+            <div class="md-tile-k">Diffusion <em>D</em></div>
+            <div class="md-tile-v" id="mdStatD">—</div>
+            <div class="md-tile-s" id="mdStatDSub"></div>
+          </div>
+          <div class="md-tile">
+            <div class="md-tile-k">Density</div>
+            <div class="md-tile-v" id="mdStatRho">—</div>
+            <div class="md-tile-s" id="mdStatRhoSub"></div>
+          </div>
+          <div class="md-tile">
+            <div class="md-tile-k">Elapsed <em>t*</em></div>
+            <div class="md-tile-v" id="mdStatTime">—</div>
+            <div class="md-tile-s" id="mdStatTimeSub"></div>
+            <span class="md-chip" id="mdPhase">—</span>
+          </div>
+        </div>
+
+        <!-- --------------------------------------------------------- charts -->
+        <div class="md-charts">
+          <div class="md-card">
+            <h4>Temperature against time</h4>
+            <p>Instantaneous <em>T*</em> from the kinetic energy. It fluctuates around the target by roughly 1/√N — that noise is physical, not numerical.</p>
+            <canvas id="mdChartT"></canvas>
+          </div>
+
+          <div class="md-card">
+            <h4>Energy per atom</h4>
+            <p>Kinetic, potential, and their sum, all in ε — one quantity, one axis. With the thermostat off, the total line should be flat.</p>
+            <canvas id="mdChartE"></canvas>
+            <div class="md-legend">
+              <span><i style="background:var(--md-s1)"></i>kinetic</span>
+              <span><i style="background:var(--md-s2)"></i>potential</span>
+              <span><i style="background:var(--md-s3)"></i>total</span>
+            </div>
+          </div>
+
+          <div class="md-card">
+            <h4>Speed distribution</h4>
+            <p>Measured speeds of the majority species against the two-dimensional Maxwell–Boltzmann law <em>p(v) ∝ v·exp(−mv²/2k<sub>B</sub>T)</em> at the current temperature. Nothing fits it — they simply agree.</p>
+            <canvas id="mdChartV"></canvas>
+            <div class="md-legend">
+              <span><i class="md-bar" style="background:var(--md-s1)"></i>measured</span>
+              <span><i style="background:var(--md-ink)"></i>Maxwell–Boltzmann</span>
+            </div>
+          </div>
+
+          <div class="md-card">
+            <h4>Radial distribution <em>g(r)</em></h4>
+            <p>How much more likely you are to find an atom at distance <em>r</em> than in an ideal gas. Sharp repeating peaks mean a crystal; one broad peak decaying to 1 means a liquid; flat at 1 means a gas.</p>
+            <canvas id="mdChartG"></canvas>
+          </div>
+
+          <div class="md-card">
+            <h4>Mean-square displacement</h4>
+            <p>How far atoms wander from where they started. A straight line means diffusion, and its slope is 4<em>D</em> in two dimensions; a line that flattens means the atoms are trapped in a lattice.</p>
+            <canvas id="mdChartM"></canvas>
+          </div>
+
+          <div class="md-card md-tall">
+            <h4>The pair potential itself</h4>
+            <p>
+              <em>U(r)</em> and <em>F(r)</em> for the chosen pair, drawn as stacked panels on a shared
+              <em>r</em> axis — two different units never share one y scale. The orange dot follows the
+              nearest-neighbour distance of whichever atom you are hovering.
+            </p>
+            <div style="display:flex;gap:8px;margin-bottom:6px">
+              <select id="mdPairA" aria-label="First species"></select>
+              <select id="mdPairB" aria-label="Second species"></select>
+            </div>
+            <canvas id="mdChartPair"></canvas>
+          </div>
+        </div>
+
+        <div class="md-charttip" id="mdChartTip" hidden></div>
+
+        <div class="md-tablebar">
+          <button type="button" id="mdTableToggle" aria-expanded="false" aria-controls="mdTableWrap">Show data tables</button>
+          <button type="button" id="mdCsv">Download trajectory as CSV</button>
+          <span class="md-hint" style="margin:0">Every chart on this page has a table twin, so no value is reachable only by colour or hover.</span>
+        </div>
+        <div class="md-tablewrap" id="mdTableWrap" hidden></div>
+      </div>
+    </section>
+
+    <!-- ======================= METHOD ======================= -->
+    <section class="space-y-6">
+      <div class="space-y-2">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Method</p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">What the simulation actually does</h2>
+        <p class="text-base text-slate-700 dark:text-slate-200 max-w-4xl">
+          This is a real molecular-dynamics code, only small and two-dimensional. It is worth being
+          precise about what it computes and what it leaves out.
+        </p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2">
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">The potential</h3>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+            Lennard-Jones, <em>U(r) = 4ε[(σ/r)<sup>12</sup> − (σ/r)<sup>6</sup>]</em>, truncated at
+            2.5 σ<sub>ij</sub> and shifted so the energy is continuous there. Unlike pairs mix by
+            Lorentz–Berthelot, σ<sub>ij</sub> = (σ<sub>i</sub>+σ<sub>j</sub>)/2 and
+            ε<sub>ij</sub> = √(ε<sub>i</sub>ε<sub>j</sub>), with the cross term scalable so you can
+            drive demixing. Molecules add harmonic bonds; the ionic preset adds damped shifted-force
+            electrostatics rather than an Ewald sum, which is the standard cheap choice for a cutoff
+            code.
+          </p>
+        </article>
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">The integrator and the thermostat</h3>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+            BAOAB Langevin dynamics with one force evaluation per step; at zero friction it collapses
+            to plain velocity Verlet, so "no thermostat" is genuinely constant-energy. Verified
+            head-less: total energy drifts by 0.02 % of the kinetic energy over 8 000 NVE steps and
+            the drift falls as Δt², the Langevin thermostat reproduces its target temperature to
+            better than 1 %, and heavy and light species come out at the same temperature, as
+            equipartition demands.
+          </p>
+        </article>
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Units</h3>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+            Reduced Lennard-Jones units — lengths in σ, energies in ε, masses in <em>m</em>, and
+            k<sub>B</sub> = 1. The physical read-outs map those onto argon (ε/k<sub>B</sub> = 119.8 K,
+            σ = 3.4 Å, <em>m</em> = 39.95 u), which fixes the time unit at τ = σ√(m/ε) = 2.15 ps and
+            the force unit at ε/σ = 4.87 pN. Change the substance and only the labels change; the
+            trajectory is identical.
+          </p>
+        </article>
+        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">What it is not</h3>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+            Two dimensions, not three: the phase diagram is qualitatively right but the numbers are
+            not argon's, and true long-range order is forbidden in 2D. There are no electrons, so no
+            bond breaking, no polarisation, no chemistry. A few hundred atoms is far below what a
+            finite-size study would need. It is a demonstration of mechanism, not a production
+            calculation.
+          </p>
+        </article>
+      </div>
+
+      <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+        <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Why this sits on a materials-ML page</h3>
+        <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+          A machine-learned interatomic potential has exactly one job: given the positions of the
+          atoms, return the energy and the forces — the two fields this page draws. Everything
+          downstream, every melting point and diffusion coefficient and phase boundary, comes from
+          integrating those forces. Watching a hand-written potential produce a melting transition
+          makes it concrete what a learned potential has to get right, and why force errors of a few
+          meV/Å are the currency of the field. The companion
+          <a href="materials.html#mlip-map" class="underline decoration-slate-300 underline-offset-4 hover:text-slate-900 dark:decoration-slate-600 dark:hover:text-white">force-field family tree</a>
+          maps the methods that learn them.
+        </p>
+      </div>
+    </section>
+
+    <section id="contact" class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 dark:bg-slate-900 dark:ring-slate-800">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400" data-i18n="contact.kicker">Contact</p>
+          <h2 class="text-xl font-semibold text-slate-900 dark:text-white" data-i18n="contact.title">Let's connect</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300" data-i18n-html="contact.body">Use the form below or email me at <a class="underline" href="mailto:aidar.alimbayev@mbzuai.ac.ae">aidar.alimbayev@mbzuai.ac.ae</a>.</p>
+        </div>
+        <a href="materials.html" class="inline-flex items-center rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200" data-i18n="page.cta">Back to Materials Science Research</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white/90 py-8 dark:border-slate-800 dark:bg-slate-900/90">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-slate-600 dark:text-slate-300">
+      <p>© <span id="year"></span> <span data-i18n="nav.brand">Aidar Alimbayev</span>. <span data-i18n="footer.role">AI researcher &amp; builder.</span></p>
+      <div class="flex flex-wrap gap-4">
+        <a href="https://github.com/AidarAlimbayev" class="hover:text-slate-900 dark:hover:text-white">GitHub</a>
+        <a href="https://www.linkedin.com/in/aidar-alimbayev-067b7910a/" class="hover:text-slate-900 dark:hover:text-white">LinkedIn</a>
+        <a href="materials.html" class="hover:text-slate-900 dark:hover:text-white" data-i18n="nav.materials">Materials Science Research</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
