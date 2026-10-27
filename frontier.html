@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aidar Alimbayev — Research Portfolio</title>
+<meta name="description" content="Research portfolio of Aidar Alimbayev (PhD, MBZUAI): AI for physics, out-of-distribution generalisation, learned simulation and physics-informed numerics.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f9fa; --card: #ffffff; --ink: #0e3a46; --text: #1d2a30; --muted: #5b6b73;
+    --accent: #1b8a8f; --accent-soft: #e3f3f3; --line: #dbe4e7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0d1517; --card: #142024; --ink: #cfeef0; --text: #dbe6e9; --muted: #93a7ad;
+      --accent: #4fc2c7; --accent-soft: #17383b; --line: #24363b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0d1517; --card: #142024; --ink: #cfeef0; --text: #dbe6e9; --muted: #93a7ad;
+    --accent: #4fc2c7; --accent-soft: #17383b; --line: #24363b;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 "Source Sans 3", system-ui, sans-serif; }
+  main { max-width: 920px; margin: 0 auto; padding: 48px 16px 64px; }
+  h1, h2, h3 { font-family: "Space Grotesk", system-ui, sans-serif; color: var(--ink); line-height: 1.2; }
+  h1 { font-size: clamp(2rem, 5vw, 2.8rem); margin: 0 0 4px; }
+  h2 { font-size: 1.35rem; margin: 48px 0 16px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
+  h3 { font-size: 1.1rem; margin: 0 0 6px; }
+  a { color: var(--accent); }
+  .role { color: var(--accent); font-weight: 600; margin: 0 0 12px; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: .95rem; }
+  .pitch { font-size: 1.1rem; margin: 24px 0 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card p { margin: 6px 0 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .tag { background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 1px 10px; font-size: .78rem; font-weight: 600; }
+  .result { font-family: "Space Grotesk", sans-serif; font-weight: 600; color: var(--ink); }
+  .meta { color: var(--muted); font-size: .9rem; }
+  table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: "Space Grotesk", sans-serif; color: var(--ink); font-size: .9rem; }
+  tr:last-child td { border-bottom: 0; }
+  .table-wrap { overflow-x: auto; }
+  ol.pubs li { margin-bottom: 8px; }
+  .status { color: var(--accent); font-weight: 600; }
+  footer { margin-top: 56px; color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Aidar Alimbayev</h1>
+    <p class="role">PhD candidate in Machine Learning, MBZUAI · supervisor Prof. Martin Takáč</p>
+    <div class="links">
+      <a href="mailto:aidar.alimbayev@mbzuai.ac.ae">aidar.alimbayev@mbzuai.ac.ae</a>
+      <a href="https://aidaralimbayev.github.io">aidaralimbayev.github.io</a>
+      <a href="https://github.com/AidarAlimbayev">GitHub</a>
+      <a href="https://scholar.google.com/citations?user=ajFYzvIAAAAJ&hl=en">Google Scholar</a>
+      <a href="https://www.linkedin.com/in/aidar-alimbayev-067b7910a">LinkedIn</a>
+    </div>
+    <p class="pitch">I build neural models of physical systems that keep the physics intact (symmetry, energy conservation,
+      quantum-chemical densities) and keep working outside the training distribution: on larger molecules, longer
+      trajectories and new physical targets.</p>
+  </header>
+
+  <h2>Fit with Frontier Computation</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Team interest</th><th>My evidence</th></tr>
+    <tr><td>AI for Physics</td><td>Thesis: a physics-aware foundation model for atomistic systems. Quantum Deep Field models, equivariant interatomic potentials, density-of-states prediction.</td></tr>
+    <tr><td>Robust / OOD generalisation</td><td>QDFaiNN and LAMP-QDF both cut error on molecules larger than any seen in training (−32% and −28.5%).</td></tr>
+    <tr><td>Learning simulations</td><td>KAN substitutions in six equivariant force-field families on MD17, checked with short MD runs. Latent-ODE forecasting of temperature and energy drift.</td></tr>
+    <tr><td>Numerical mathematics</td><td>KAN vs. MLP physics-informed PDE solvers across five PDE classes, scored by accuracy per parameter, per FLOP and per second. Gaussian-basis and spline function approximation.</td></tr>
+    <tr><td>Python, deep learning, agentic coding</td><td>PyTorch every day; multi-GPU Slurm campaigns on A100, H200 and AMD MI210. Coding agents for experiment campaigns, with manual implementation and review of results.</td></tr>
+  </table>
+  </div>
+
+  <h2>Selected projects</h2>
+  <div class="grid">
+    <article class="card">
+      <div class="tags"><span class="tag">OOD</span><span class="tag">AI for Physics</span></div>
+      <h3>QDFaiNN: deformable basis functions</h3>
+      <p>A PaiNN-style directional block and a learned pseudo-electronegativity deform the Gaussian basis inside a Quantum Deep Field model.</p>
+      <p class="result">−34% interpolation, −32% size-extrapolation error, +3.6% parameters</p>
+      <p class="meta">First author · QM9, QM7-X · manuscript in revision</p>
+    </article>
+    <article class="card">
+      <div class="tags"><span class="tag">OOD</span><span class="tag">Attention</span></div>
+      <h3>LAMP-QDF: local attention for the HK map</h3>
+      <p>Replaces the pointwise density-to-potential map with distance-aware local graph attention.</p>
+      <p class="result">QM9 MAE 1.06 kcal/mol (−26%); −28.5% on larger unseen molecules</p>
+      <p class="meta">SimBioChem Workshop, NeurIPS 2026 · accepted</p>
+    </article>
+    <article class="card">
+      <div class="tags"><span class="tag">Learned simulation</span><span class="tag">MD</span></div>
+      <h3>KAN force fields and latent-ODE dynamics</h3>
+      <p>Matched KAN substitutions in MACE, NequIP, SO3krates, eSEN and other families. Forces come from energy gradients; accuracy, cost, rotation symmetry and MD stability are audited together. KAN-LinODENet forecasts trajectory temperature and energy drift.</p>
+      <p class="meta">MD17 · an honest record, including negative results</p>
+    </article>
+    <article class="card">
+      <div class="tags"><span class="tag">Numerics</span><span class="tag">PDEs</span></div>
+      <h3>KAN vs. MLP PINNs across PDE classes</h3>
+      <p>A caveat-first re-evaluation against a tuned Fourier-feature baseline, with 3 seeds and per-model tuning. Any KAN advantage depends on the problem's structure, and KANs are 8–23× slower per iteration.</p>
+      <p class="meta">Five PDE classes · reproducible experiment ledger</p>
+    </article>
+    <article class="card">
+      <div class="tags"><span class="tag">Transfer</span><span class="tag">Foundation models</span></div>
+      <h3>UMA-DOS</h3>
+      <p>Fine-tunes pretrained UMA interatomic-potential backbones with a shape–amplitude spectral decoder to predict the electronic density of states.</p>
+      <p class="result">nMAE 0.112 vs. 0.135 (−17%)</p>
+      <p class="meta">Materials Project · NeurIPS 2026, submitted</p>
+    </article>
+    <article class="card">
+      <div class="tags"><span class="tag">Generative</span><span class="tag">Scale</span></div>
+      <h3>MOF inverse design</h3>
+      <p>A UMA encoder with a flow-matching decoder conditioned on CO₂ uptake. The data pipeline handles 324k structures, with parsing 50× faster and graph construction 76× faster.</p>
+      <p class="meta">IIT Delhi – MBZUAI collaboration</p>
+    </article>
+  </div>
+
+  <h2>Selected publications (2026)</h2>
+  <ol class="pubs">
+    <li>K. Ziu, A. V. Cohen, Y. Ito, <b>A. Alimbayev</b>, L. Kronik, M. Takáč. <i>UMA-DOS: Transfer Learning from Pretrained Atomistic Models for Density of States Prediction.</i> NeurIPS 2026, submitted.</li>
+    <li>D. Kumar, Y. Ito, <b>A. Alimbayev</b>, K. Ziu, M. Takáč. <i>LAMP-QDF: Local Attention Map for Potential in Quantum Deep Field.</i> SimBioChem Workshop, NeurIPS 2026, <span class="status">accepted</span>.</li>
+    <li>A. Shtanchaev, A. Asadulaev, <b>A. Alimbayev</b>, K. Salta, M. Takáč, E. Moulines. <i>Perturb-and-Solve: Efficient Learned-Operator Conditioning for Latent Diffusion Inverse Problems.</i> BeNTo Workshop, NeurIPS 2026, <span class="status">accepted</span>; ICLR 2027, under review.</li>
+    <li>Y. Ito, <b>A. Alimbayev</b>, K. Ziu, D. Kumar, K. Ono, M. Takáč. <i>Revisiting Attention Formulations for Molecular Transformers with Positional Encoding.</i> TMLR, under review.</li>
+    <li><b>A. Alimbayev</b>, Y. Ito, D. Kumar, K. Ziu, A. Shtanchaev, A. V. Cohen, L. Kronik, M. Takáč. <i>Variational Pseudo Electronegativity: an Orbital-Resolved Basis Deformation inside a Quantum Deep Field Model.</i> Manuscript in revision.</li>
+    <li>R. Gao, D. Kumar, <b>A. Alimbayev</b>, K. Ziu, Y. Ito, A. Shtanchaev, R. Bresson, M. Takáč. <i>Kolmogorov–Arnold Networks for Compact and Interpretable Latent Linear ODE Models.</i> Sim2Sci Workshop, NeurIPS 2026, submitted.</li>
+  </ol>
+  <p class="meta">Earlier work includes a first-author paper in <i>Scientific Reports</i> (2023) and physics-informed neural networks at Texas A&amp;M (2022). The full list is on <a href="https://scholar.google.com/citations?user=ajFYzvIAAAAJ&hl=en">Google Scholar</a>.</p>
+
+  <footer>Available for a full-time, in-person Student Researcher placement in London in 2027.</footer>
+</main>
+</body>
+</html>
