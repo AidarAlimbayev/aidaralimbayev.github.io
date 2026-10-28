@@ -82,75 +82,190 @@
     <section class="space-y-3">
       <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Previous Research</p>
       <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">Selected research highlights</h1>
-      <p class="text-lg text-slate-700 dark:text-slate-200">Past projects spanning health data science, embedded systems, and physics-informed modeling. More publications are on my Google Scholar.</p>
+      <p class="text-lg text-slate-700 dark:text-slate-200">Research and engineering, mostly from the years before my PhD: machine learning on national health data, physics-informed neural networks, measurement and IoT systems, research test stands for Nazarbayev University faculty and PhD students, and student engineering teams. My current work is on the <a href="materials.html" class="underline decoration-slate-300 underline-offset-4 hover:text-slate-900 dark:decoration-slate-600 dark:hover:text-white">Materials Science Research</a> page, and the full publication list is on <a href="https://scholar.google.com/citations?user=ajFYzvIAAAAJ&amp;hl=en" class="underline decoration-slate-300 underline-offset-4 hover:text-slate-900 dark:decoration-slate-600 dark:hover:text-white" target="_blank" rel="noreferrer">Google Scholar</a>.</p>
     </section>
 
-    <section class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    <section class="space-y-6">
+      <div class="space-y-2">
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Research and publications</h2>
+      </div>
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
         <div class="h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
-          <img src="images/PPM_Gunn_diode.png" alt="PPM modulation demo" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+          <div role="img" aria-label="Illustration of a survival curve" class="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 transition duration-500 group-hover:scale-105 dark:from-slate-800 dark:to-slate-900"><svg viewBox="0 0 240 120" class="h-28 w-56 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 100 H220 M20 100 V12" stroke-width="1.5"/><path d="M20 22 H58 V34 H92 V46 H124 V62 H156 V70 H190 V82 H220" stroke-width="3"/><path d="M20 22 H70 V28 H110 V36 H150 V42 H190 V50 H220" stroke-dasharray="6 5"/></svg></div>
         </div>
         <div class="p-5 space-y-3">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">PPM modulation &amp; demodulation on NI FPGA</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-300">Pulse-position modulation chain with custom LabVIEW interface and FPGA signal processing.</p>
-          <a href="docs/Implementation_of_PPM_modulation_and_demodulation_using_NI_Digital_Electronics_FPGA_Board.pdf" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">Paper PDF →</a>
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">2021–2022 · Nazarbayev University School of Medicine</p>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Machine learning on national health data</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Research Assistant on a Ministry of Education and Science grant (supervisors Prof. Abduzhappar Gaipov and Dr. Amin Zollanvari). I used machine learning on administrative healthcare data from Kazakhstan&#39;s Unified Electronic Healthcare System (UNEHS) to predict 1-year mortality of patients with diabetes mellitus. This project was the start of my path into machine learning.</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">A. Alimbayev et al., <em>Scientific Reports</em> 13, 8412 (2023), first author. Also a co-author of a review of the UNEHS research databases, <em>International Journal of Medical Informatics</em> 170, 104950 (2023).</p>
+          <div class="flex flex-wrap gap-x-4 gap-y-1">
+            <a href="https://www.nature.com/articles/s41598-023-35551-4" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">Scientific Reports paper →</a>
+          </div>
         </div>
       </article>
 
       <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
         <div class="h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
-          <img src="images/PSO.gif" alt="Particle swarm optimization visualization" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+          <img src="images/burger.gif" alt="Animated comparison of a PSO-PINN solution of Burgers&#39; equation with a quadrature reference" loading="lazy" decoding="async" class="h-full w-full object-contain bg-white transition duration-500 group-hover:scale-105">
         </div>
         <div class="p-5 space-y-3">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Swarm optimization for control</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-300">Animated experiments exploring convergence behaviors and teaching control concepts.</p>
-          <a href="images/PSO.gif" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">View demo →</a>
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">2022 · Texas A&amp;M University</p>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Physics-informed neural networks with particle swarm optimisation</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Visiting Scholar in Prof. Ulisses Braga-Neto&#39;s group (Department of Electrical and Computer Engineering, Aug–Dec 2022), funded by a Shakhmardan Yessenov Foundation fellowship. I worked on physics-informed neural networks for complex systems and on stacked generalisation with particle swarm optimisation.</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Animation: a preliminary run of PSO-PINN (the particle-swarm-trained PINN of C. Davi and U. Braga-Neto) on Burgers&#39; equation, compared with a quadrature reference.</p>
+          <div class="flex flex-wrap gap-x-4 gap-y-1">
+            <a href="https://engineering.tamu.edu/electrical/profiles/ubraganeto.html" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">Prof. Braga-Neto&#39;s profile →</a>
+          </div>
         </div>
       </article>
 
       <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
         <div class="h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
-          <img src="images/burger.gif" alt="Burgers equation simulation" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+          <img src="images/previous-research/cattle-iot-weighing-station.jpg" alt="Cattle around the automated weighing station in a dairy barn" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
         </div>
         <div class="p-5 space-y-3">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Burgers equation solver</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-300">Numerical simulations and visualizations for physics-informed modeling practice.</p>
-          <a href="images/burger.gif" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">Watch animation →</a>
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Precision livestock farming · ASTES Journal 2021</p>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">IoT platform for stress-free monitoring of cattle productivity</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">An automated weighing station for a dairy farm, in a project managed by the Ministry of Agriculture of Kazakhstan. I designed the system structure, sourced the electrical components and wrote the data-collection software: the station reads each cow&#39;s RFID tag and weight (load cells up to 1000 kg), and a Raspberry Pi unit (Python, SQLite) sends the records to a web server.</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">A. Mirmanov, A. Alimbayev et al., <em>Advances in Science, Technology and Engineering Systems Journal</em> 6(1), 501–508 (2021), second author.</p>
+          <div class="flex flex-wrap gap-x-4 gap-y-1">
+            <a href="https://github.com/AidarAlimbayev/pcf_lora_project" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">Code on GitHub →</a>
+          </div>
         </div>
       </article>
 
       <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
         <div class="h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
-          <img src="images/test_stand_power_supply.png" alt="Test stand for power-supply sources" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+          <img src="images/previous-research/microwave-telemetry-concept.png" alt="Concept diagram of microwave PPM telemetry from a drill bit to a surface receiver" loading="lazy" decoding="async" class="h-full w-full object-contain bg-white transition duration-500 group-hover:scale-105">
         </div>
         <div class="p-5 space-y-3">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Mobile power-supply test stand</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-300">DAQ-driven rig for long-term stress testing of batteries and ionistors.</p>
-          <a href="docs/Test_stand_for_prospective_mobile_power-supply_sources.pdf" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">Paper PDF →</a>
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">BSc research · S. Seifullin Kazakh Agro Technical University</p>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Microwave telemetry for horizontal drilling</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">For my BSc capstone I built a stand that measures microwave transmission from a Gunn-diode source through cylindrical waveguides filled with clay, granite and sand, as a model of telemetry through drill pipes, and compared it with a propagation model; measurements and model showed similar asymptotic behaviour. Our team&#39;s pulse-position modulation link on NI FPGA boards was published at IEEE SIBCON 2015.</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">S. B. Baiguanysh, A. B. Mirmanov, A. Alimbayev, A. Y. Makartseva, <em>Implementation of PPM modulation and demodulation using NI Digital Electronics FPGA board</em>, IEEE SIBCON 2015.</p>
+          <div class="flex flex-wrap gap-x-4 gap-y-1">
+            <a href="https://ieeexplore.ieee.org/document/7147331" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">IEEE Xplore →</a>
+          </div>
         </div>
       </article>
 
       <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
         <div class="h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
-          <img src="images/GitHub-Mark-120px-plus.png" alt="Portfolio PDF cover" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+          <img src="images/test_stand_power_supply.png" alt="Supercapacitor test stand on a lab bench with the LabVIEW control panel on a laptop" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
         </div>
         <div class="p-5 space-y-3">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Portfolio &amp; bio</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-300">Concise PDF overview of projects, skills, and publications.</p>
-          <a href="docs/Portfolio_and_Bio_Alimbayev_Aidar_black.pdf" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">Download PDF →</a>
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">2016–2017 · Bonch-Bruevich St. Petersburg State University of Telecommunications</p>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Test stand for mobile power-supply sources</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">At the TIOS scientific-educational centre I built a two-channel charge/discharge stand (NI USB-6001 DAQ, LabVIEW) that cycles experimental supercapacitors (ionistors) non-stop, logs all readings to an Excel file and switches on cooling fans above 50 °C. In two weeks of testing, capacitance fell to about 3.3 kF and kept declining with every cycle.</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">A. Alimbayev, V. S. Uss, A. B. Mirmanov, P. P. Shumakov, <em>Test stand for prospective mobile power-supply sources</em>, IEEE SIBCON 2017, first author.</p>
+          <div class="flex flex-wrap gap-x-4 gap-y-1">
+            <a href="https://ieeexplore.ieee.org/document/7998548" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">IEEE Xplore →</a>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section class="space-y-6">
+      <div class="space-y-2">
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Research test stands and engineering projects</h2>
+        <p class="text-sm text-slate-600 dark:text-slate-300">From 2018 to 2024 I was an engineer at the Nazarbayev University Fab Lab and prototyping centre, building experimental stands for faculty and PhD projects. In 2023–2024 I also worked with InPro-Tech on an energy-efficiency controller that was piloted at NU.</p>
+      </div>
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
+        <div class="h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
+          <img src="images/previous-research/offshore-ice-load-stand.jpg" alt="Offshore platform model in the water tank of the ice-load test stand" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+        </div>
+        <div class="p-5 space-y-3">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">For a PhD student&#39;s project at NU</p>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Ice-load fatigue stand for an offshore platform model</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">I built every part of the stand: a steel mono-tower platform model in a water tank, loaded with simulated ice through a gate actuator. An Arduino Mega reads 16 strain-gauge sensors (firmware in C++) and streams the data to a real-time MATLAB dashboard that logs to CSV, for fatigue studies planned to run for up to six months.</p>
         </div>
       </article>
 
       <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
         <div class="h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
-          <img src="images/test_stand_power_supply.png" alt="Health data research" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+          <img src="images/previous-research/shape-memory-hot-press.jpg" alt="Hot-press stand with a hydraulic cylinder, heated block and control cabinet" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
         </div>
         <div class="p-5 space-y-3">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Health data research</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-300">Cohort modeling for epidemiology and risk prediction using national health datasets.</p>
-          <a href="https://www.nature.com/articles/s41598-023-35551-4" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">Scientific Reports paper →</a>
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">For Prof. Christos Spitas</p>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Hot press for shape-memory metal sheets</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Control engineer on the team that built a press producing bimetallic aluminium and titanium sheets with shape-memory effect, for vibration- and weight-optimised satellite structures: two sheets are pressed and bonded at up to 600 °C in about 15 minutes. My part was the power switching, PT-100 temperature sensing and Siemens-based thermal regulation; residual heat made temperature control one of the hardest parts.</p>
         </div>
       </article>
+
+      <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
+        <div class="h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
+          <img src="images/previous-research/convective-drying-stand.jpg" alt="Stainless-steel drying cabinet with stacked trays" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+        </div>
+        <div class="p-5 space-y-3">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">For Prof. Sergey Spotar</p>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Controlled convective drying stand</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Part of the team that built a stand for studying the convective drying of apple rings, following the professor&#39;s structural scheme: an air-heating module, a fan with speed control, and a desiccator cabinet with stacked trays on scales.</p>
+        </div>
+      </article>
+
+      <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
+        <div class="h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
+          <img src="images/previous-research/electrologic-controller.jpg" alt="ElectroLogic programmable logic controller, version 4.4, in a DIN-rail housing" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+        </div>
+        <div class="p-5 space-y-3">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">2023–2024 · InPro-Tech LLP, Astana</p>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">ElectroLogic controller for building energy efficiency</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Project team member on InPro-Tech&#39;s ElectroLogic innovation project, funded by a QazInnovations technology-commercialisation grant: the development and pilot testing of a 12-channel programmable logic controller to improve the energy efficiency of administrative buildings. The project was completed in 2024, with 10 controllers installed at Nazarbayev University.</p>
+          <div class="flex flex-wrap gap-x-4 gap-y-1">
+            <a href="https://inprotech.kz" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">InPro-Tech →</a>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <section class="space-y-6">
+      <div class="space-y-2">
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Student teams and laboratories</h2>
+      </div>
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
+        <div class="h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
+          <img src="images/previous-research/castelloli-scooter-2019.jpg" alt="Nazarbayev University team with the electric scooter at the Castellolí Smart Scooter Challenge 2019" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+        </div>
+        <div class="p-5 space-y-3">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">2019 · Castellolí, Spain</p>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Smart Scooter Challenge: 1st place in two categories</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">I supervised the four-student Nazarbayev University team that built an electric scooter in six months of evenings at the Fab Lab, with a fast-stop control system and an Android remote-control app; I advised the team and managed the procurement. The scooter won both the dynamic and the static events.</p>
+          <div class="flex flex-wrap gap-x-4 gap-y-1">
+            <a href="https://nu.edu.kz/news/nazarbayev-university-team-won-at-the-smart-scooter-international-competition-in-barcelona" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">NU news →</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
+        <div class="h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
+          <img src="images/previous-research/shell-eco-marathon-team.jpg" alt="Nazarbayev University Shell Eco-marathon team after passing technical inspection" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+        </div>
+        <div class="p-5 space-y-3">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">2018–2025 · Singapore, Indonesia, Qatar</p>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Shell Eco-marathon student teams</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Technical supervisor of Nazarbayev University teams that design and build energy-efficient electric prototype cars, from a carbon-fibre monocoque to STM32-based motor control. Several team batches competed at Shell Eco-marathon events in Singapore, Indonesia and Qatar.</p>
+        </div>
+      </article>
+
+      <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-1 hover:shadow-lg dark:bg-slate-900 dark:ring-slate-800">
+        <div class="h-44 overflow-hidden bg-slate-100 dark:bg-slate-800">
+          <img src="images/previous-research/nu-electronics-lab.jpg" alt="Electronics workshop at Nazarbayev University" loading="lazy" decoding="async" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+        </div>
+        <div class="p-5 space-y-3">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Seifullin University and Nazarbayev University</p>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Electronics laboratories and teaching</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">I set up two electronics laboratories, at Seifullin University and at Nazarbayev University, planning the equipment, budgets and procurement; students continued the projects we had started and formed clubs and teams, and the Seifullin lab, which has equipment for placing SMD components, went on to host IoT and LoRaWAN projects. I taught digital signal processing and LabVIEW at Seifullin University (2017–2018) and ran an Arduino course for a robotics teachers&#39; club (2018) and a MATLAB course for beginners at NU (2019).</p>
+          <div class="flex flex-wrap gap-x-4 gap-y-1">
+            <a href="https://github.com/AidarAlimbayev/Digital_Signal_Processing" class="inline-flex items-center text-sm font-semibold text-slate-900 hover:underline dark:text-white" target="_blank" rel="noreferrer">DSP course materials →</a>
+          </div>
+        </div>
+      </article>
+      </div>
     </section>
 
     <section id="contact" class="space-y-6">
