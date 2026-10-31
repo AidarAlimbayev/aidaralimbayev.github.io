@@ -73,8 +73,8 @@
   <table>
     <tr><th>Team interest</th><th>My evidence</th></tr>
     <tr><td>AI for Physics</td><td>Thesis: a physics-aware foundation model for atomistic systems. Quantum Deep Field models, equivariant interatomic potentials, density-of-states prediction.</td></tr>
-    <tr><td>Robust / OOD generalisation</td><td>QDFaiNN and LAMP-QDF both cut error on molecules larger than any seen in training (−32% and −28.5%).</td></tr>
-    <tr><td>Learning simulations</td><td>KAN substitutions in six equivariant force-field families on MD17, checked with short MD runs. Latent-ODE forecasting of temperature and energy drift.</td></tr>
+    <tr><td>Robust / OOD generalisation</td><td>QDFaiNN and LAMP-QDF are trained on small molecules and tested on larger ones they never saw.</td></tr>
+    <tr><td>Learning simulations</td><td>SO3NNet, an equivariant interatomic potential written from scratch, now gaining long-range electrostatics and dispersion (in progress). Physics-informed neural networks at Texas A&amp;M.</td></tr>
     <tr><td>Numerical mathematics</td><td>KAN vs. MLP physics-informed PDE solvers across five PDE classes, scored by accuracy per parameter, per FLOP and per second. Gaussian-basis and spline function approximation.</td></tr>
     <tr><td>Python, deep learning, agentic coding</td><td>PyTorch every day; multi-GPU Slurm campaigns on A100, H200 and AMD MI210. Coding agents for experiment campaigns, with manual implementation and review of results.</td></tr>
   </table>
@@ -86,21 +86,22 @@
       <div class="tags"><span class="tag">OOD</span><span class="tag">AI for Physics</span></div>
       <h3>QDFaiNN: deformable basis functions</h3>
       <p>A PaiNN-style directional block and a learned pseudo-electronegativity deform the Gaussian basis inside a Quantum Deep Field model.</p>
-      <p class="result">−34% interpolation, −32% size-extrapolation error, +3.6% parameters</p>
-      <p class="meta">First author · QM9, QM7-X · manuscript in revision</p>
+      <p class="result">Trained on small molecules, tested on larger ones; learned densities sit closer to DFT references (PySCF)</p>
+      <p class="meta">First author · NeurIPS 2026 workshop, submitted</p>
     </article>
     <article class="card">
       <div class="tags"><span class="tag">OOD</span><span class="tag">Attention</span></div>
       <h3>LAMP-QDF: local attention for the HK map</h3>
       <p>Replaces the pointwise density-to-potential map with distance-aware local graph attention.</p>
-      <p class="result">QM9 MAE 1.06 kcal/mol (−26%); −28.5% on larger unseen molecules</p>
+      <p class="result">Helps most on larger molecules not seen in training</p>
       <p class="meta">SimBioChem Workshop, NeurIPS 2026 · accepted</p>
     </article>
     <article class="card">
-      <div class="tags"><span class="tag">Learned simulation</span><span class="tag">MD</span></div>
-      <h3>KAN force fields and latent-ODE dynamics</h3>
-      <p>Matched KAN substitutions in MACE, NequIP, SO3krates, eSEN and other families. Forces come from energy gradients; accuracy, cost, rotation symmetry and MD stability are audited together. KAN-LinODENet forecasts trajectory temperature and energy drift.</p>
-      <p class="meta">MD17 · an honest record, including negative results</p>
+      <div class="tags"><span class="tag">Learned simulation</span><span class="tag">Equivariance</span></div>
+      <h3>SO3NNet: long-range physics in an equivariant potential</h3>
+      <p>An O(3)-equivariant interatomic potential written from scratch in PyTorch. I wrote the equivariant core by hand; long-range electrostatics with conserved charges, dispersion and short-range repulsion were added with AI coding agents.</p>
+      <p class="result">Checked with rotation-symmetry and finite-difference force tests</p>
+      <p class="meta">Current research · preliminary results</p>
     </article>
     <article class="card">
       <div class="tags"><span class="tag">Numerics</span><span class="tag">PDEs</span></div>
@@ -123,16 +124,16 @@
     </article>
   </div>
 
-  <h2>Selected publications (2026)</h2>
+  <h2>Selected publications</h2>
   <ol class="pubs">
     <li>K. Ziu, A. V. Cohen, Y. Ito, <b>A. Alimbayev</b>, L. Kronik, M. Takáč. <i>UMA-DOS: Transfer Learning from Pretrained Atomistic Models for Density of States Prediction.</i> NeurIPS 2026, submitted.</li>
     <li>D. Kumar, Y. Ito, <b>A. Alimbayev</b>, K. Ziu, M. Takáč. <i>LAMP-QDF: Local Attention Map for Potential in Quantum Deep Field.</i> SimBioChem Workshop, NeurIPS 2026, <span class="status">accepted</span>.</li>
     <li>A. Shtanchaev, A. Asadulaev, <b>A. Alimbayev</b>, K. Salta, M. Takáč, E. Moulines. <i>Perturb-and-Solve: Efficient Learned-Operator Conditioning for Latent Diffusion Inverse Problems.</i> BeNTo Workshop, NeurIPS 2026, <span class="status">accepted</span>; ICLR 2027, under review.</li>
     <li>Y. Ito, <b>A. Alimbayev</b>, K. Ziu, D. Kumar, K. Ono, M. Takáč. <i>Revisiting Attention Formulations for Molecular Transformers with Positional Encoding.</i> TMLR, under review.</li>
-    <li><b>A. Alimbayev</b>, Y. Ito, D. Kumar, K. Ziu, A. Shtanchaev, A. V. Cohen, L. Kronik, M. Takáč. <i>Variational Pseudo Electronegativity: an Orbital-Resolved Basis Deformation inside a Quantum Deep Field Model.</i> Manuscript in revision.</li>
-    <li>R. Gao, D. Kumar, <b>A. Alimbayev</b>, K. Ziu, Y. Ito, A. Shtanchaev, R. Bresson, M. Takáč. <i>Kolmogorov–Arnold Networks for Compact and Interpretable Latent Linear ODE Models.</i> Sim2Sci Workshop, NeurIPS 2026, submitted.</li>
+    <li><b>A. Alimbayev</b>, Y. Ito, D. Kumar, K. Ziu, A. Shtanchaev, A. V. Cohen, L. Kronik, M. Takáč. <i>Variational Pseudo Electronegativity: Learning an Orbital-Resolved Basis Deformation inside a Quantum Deep Field Model.</i> NeurIPS 2026 workshop, submitted.</li>
+    <li><b>A. Alimbayev</b>, G. Zhakhina, A. Gusmanov, Y. Sakko, S. Yerdessov, I. Arupzhanov, A. Kashkynbayev, A. Zollanvari, A. Gaipov. <i>Predicting 1-year mortality of patients with diabetes mellitus in Kazakhstan based on administrative health data using machine learning.</i> Scientific Reports 13, 8412 (2023).</li>
   </ol>
-  <p class="meta">Earlier work includes a first-author paper in <i>Scientific Reports</i> (2023) and physics-informed neural networks at Texas A&amp;M (2022). The full list is on <a href="https://scholar.google.com/citations?user=ajFYzvIAAAAJ&hl=en">Google Scholar</a>.</p>
+  <p class="meta">Earlier work includes physics-informed neural networks at Texas A&amp;M (2022). The full list is on <a href="https://scholar.google.com/citations?user=ajFYzvIAAAAJ&hl=en">Google Scholar</a>.</p>
 
   <footer>Available for a full-time, in-person Student Researcher placement in London in 2027.</footer>
 </main>
